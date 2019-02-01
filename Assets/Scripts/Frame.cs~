@@ -21,7 +21,7 @@ public class Frame : MonoBehaviour {
     GameObject activeFrame;
 
     // state variables
-    private float step;
+    float step;
     float posX0;
     Vector2 target;
     [SerializeField] bool isWinFrameActive;     

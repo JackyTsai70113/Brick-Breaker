@@ -10,19 +10,16 @@ public class GameLoader : MonoBehaviour
 
     // Use this for initialization
     void Start () {
-        fortuneSquareSprite = new List<Sprite>();
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("makePaddleLonger"));   //0
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("makePaddleShorter"));  //1
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("makeBallBigger"));     //2
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("makeBallSmaller"));    //3
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("multipleBall"));       //4
-        fortuneSquareSprite.Add(Resources.Load<Sprite>("makePaddleSeparated"));//5
+        fortuneSquareSprite = new List<Sprite>
+        {
+            Resources.Load<Sprite>("makePaddleLonger"),   //0
+            Resources.Load<Sprite>("makePaddleShorter"),  //1
+            Resources.Load<Sprite>("makeBallBigger"),     //2
+            Resources.Load<Sprite>("makeBallSmaller"),    //3
+            Resources.Load<Sprite>("multipleBall"),       //4
+            Resources.Load<Sprite>("makePaddleSeparated") //5
+        };
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     public static void GetFortuneSquareimage(GameObject gameObject, int n)
     {

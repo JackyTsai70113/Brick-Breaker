@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-
+    //determine breakableBlocks ball
     // config parameters
     [Range(0.1f, 10f)] [SerializeField] public float gameSpeed = 1f;
     [SerializeField] int breakableBlocks;
@@ -83,7 +83,6 @@ public class Level : MonoBehaviour
         if (breakableBlocks <= 0)
         {
             frame.DropWinFrame();
-            
             StopLevelWorking();
         }
     }

@@ -9,9 +9,9 @@ public class Ball : MonoBehaviour {
 
     //Cached component references
     [SerializeField] GameObject ballSprite;
-    [SerializeField] float ballSizeX;
-    [SerializeField] float ballSizeY;
-    [SerializeField] float ballSizeZ;
+    float ballSizeX;
+    float ballSizeY;
+    float ballSizeZ;
     AudioSource myAudioSource;
     Rigidbody2D myRigidbody2D;
     Level level;
@@ -26,10 +26,9 @@ public class Ball : MonoBehaviour {
 
     void Start()
     {
-        Sprite ball = Resources.Load<Sprite>("ball");
-        GetComponent<SpriteRenderer>().sprite = ball;
-        transform.localScale = new Vector3
-            (ballSizeX, ballSizeY, ballSizeZ);
+        ballSizeX = transform.localScale.x;
+        ballSizeY = transform.localScale.y;
+        ballSizeZ = transform.localScale.z;
         level = FindObjectOfType<Level>();
         paddle = FindObjectOfType<Paddle>();       
         paddleToBallVector = 
@@ -55,7 +54,7 @@ public class Ball : MonoBehaviour {
                     (ballSizeX, ballSizeY, ballSizeZ);
             }
         }
-        //Debug.Log(AbsOfVector2(myRigidbody2D.velocity));
+        //Debug.Log(myRigidbody2D.velocity.magnitude);
     }
 
     private void LauchOnMouseClick()
@@ -68,8 +67,8 @@ public class Ball : MonoBehaviour {
     }
     private void LockBallToPaddle()
     {
-        Vector2 paddlePos = new Vector2
-            (paddle.transform.position.x, 
+        Vector2 paddlePos = new Vector2(
+        paddle.transform.position.x, 
             paddle.transform.position.y);
         transform.position = paddlePos + paddleToBallVector;
     }
@@ -80,8 +79,7 @@ public class Ball : MonoBehaviour {
             Random.Range(-randomFactor, randomFactor));
         if (hasStarted)
         {
-            AudioClip clip = ballSounds;
-            myAudioSource.PlayOneShot(clip);
+            myAudioSource.PlayOneShot(ballSounds);
             if (level.IsLevelWorking())
             {
                 myRigidbody2D.velocity += velocityTweak;
@@ -89,7 +87,7 @@ public class Ball : MonoBehaviour {
         }
     }
 
-    public void BallStopMoving()
+    public void StopMoving()
     {
         myRigidbody2D.velocity = new Vector2(0f, 0f);
     }

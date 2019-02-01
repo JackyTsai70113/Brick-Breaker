@@ -11,6 +11,7 @@ public class FortuneSquare : MonoBehaviour
     [SerializeField] float smallerPaddleSizeScaleX;
     [SerializeField] float biggerBallSizeScale;
     [SerializeField] float smallerBallSizeScale;
+    [SerializeField] float speed;
 
     // cached reference
     Ball ball;
@@ -20,18 +21,15 @@ public class FortuneSquare : MonoBehaviour
     [SerializeField] TextMeshPro fortuneNumberText;
 
     // state variables
-    private int theFortuneNumber;
+    private int fortuneNumber;
     void Start()
     {
         ball = FindObjectOfType<Ball>();
         paddle = FindObjectOfType<Paddle>();
         level = FindObjectOfType<Level>();
+        GetComponent<Rigidbody2D>().velocity = new Vector2(0f, speed);
+
         //myAudioSource = GetComponent<AudioSource>();
-    }
-
-    void Update()
-    {
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -39,7 +37,7 @@ public class FortuneSquare : MonoBehaviour
         if (other.gameObject.tag == "Paddle"
             || other.gameObject.tag == "Separated Paddle")
         {
-            ChooseFortune();
+            TriggerFortune();
         }
         else if (other.gameObject.tag == "Lose Bottom Collider")
         {
@@ -60,14 +58,22 @@ public class FortuneSquare : MonoBehaviour
 
     public void SetFortuneNumber(int fortuneNumber)
     {
-        fortuneNumberText.text = fortuneNumber.ToString();
-        theFortuneNumber = fortuneNumber;
+        if (fortuneNumber >= GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength())
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        this.fortuneNumber = fortuneNumber;
+        Debug.Log(" " + fortuneNumber + " " + GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength());
+        GetComponent<SpriteRenderer>().sprite = 
+            GetComponent<SpriteLoader>().GetImage(fortuneNumber);
     }
 
-    private void ChooseFortune()
+    private void TriggerFortune()
     {
         level = FindObjectOfType<Level>();
-        switch (theFortuneNumber)
+        switch (fortuneNumber)
         {
             case 0:
                 biggerPaddleSizeScaleX = 1.5f;
@@ -96,4 +102,6 @@ public class FortuneSquare : MonoBehaviour
                 break;
         }
     }
+
+
 }

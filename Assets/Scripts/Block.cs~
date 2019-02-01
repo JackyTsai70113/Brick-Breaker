@@ -2,34 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Block : MonoBehaviour {
+public class Block : MonoBehaviour
+{
 
     // config parameters
-	[SerializeField] AudioClip breakSound;
-    [SerializeField] GameObject blockSparklesVFX;
+    [SerializeField] AudioClip breakSound;
+    [SerializeField] ParticleSystem blockSparklesVFX;
     [SerializeField] GameObject fortuneSquareSprite;
     [SerializeField] Sprite[] hitSprites;
-    [SerializeField] float speedOfLuckySquare = -3f;
 
     // cached reference
     Level level;
-    GameLoader gameLoader;
 
     // state variables
     [SerializeField] int timesHit; // to do only serialized for debug purposes
-
+    int fortuneNumber;
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         level = FindObjectOfType<Level>();
-        gameLoader = FindObjectOfType<GameLoader>();
-        Resources.Load<Sprite>("paddle");
+        //Resources.Load<Sprite>("paddle");
         CountBreakableBlocks();
+        fortuneNumber = Random.Range(0, 20);
     }
 
     private void CountBreakableBlocks()
     {
-
         if (tag == "Breakable")
         {
             level.CountBlocks();
@@ -47,29 +45,10 @@ public class Block : MonoBehaviour {
     private void HandleHit()
     {
         timesHit++;
-        int maxHits = hitSprites.Length + 1;
-        if (timesHit >= maxHits)
-        {
+        if (timesHit == hitSprites.Length + 1)
             DestroyBlock();
-        }
         else
-        {
-            ShowNextHitSprite();
-        }
-    }
-
-    private void ShowNextHitSprite()
-    {
-        int spriteIndex = timesHit - 1;
-        if (hitSprites[spriteIndex] != null)
-        {
-            GetComponent<SpriteRenderer>().sprite = 
-                hitSprites[spriteIndex];
-        }
-        else
-        {
-            Debug.LogError(gameObject.name + "Missing.");
-        }
+            GetComponent<SpriteRenderer>().sprite = hitSprites[timesHit - 1];
     }
 
     private void DestroyBlock()
@@ -89,23 +68,16 @@ public class Block : MonoBehaviour {
 
     private void TriggerSparklesVFX()
     {
-        GameObject sparkles = Instantiate
+        ParticleSystem sparkles = Instantiate
             (blockSparklesVFX, transform.position, transform.rotation);
         Destroy(sparkles, 1f);
     }
 
-    public void TriggerLuckySquare()
+    private void TriggerLuckySquare()
     {
-        int fortuneNumber = Random.Range(0, 20);
-        if (fortuneNumber < gameLoader.FSSpriteNumber())
-        {
-            GameObject theFortuneSquare = Instantiate
-                (fortuneSquareSprite, transform.position, transform.rotation);
-            GameLoader.GetImage(theFortuneSquare, fortuneNumber);
-            FindObjectOfType<FortuneSquare>().SetFortuneNumber(fortuneNumber);
-            theFortuneSquare.GetComponent<Rigidbody2D>().velocity = new Vector2
-                (0f, speedOfLuckySquare);
-        }
-        
+        GameObject fortuneSquare = (GameObject)Instantiate(
+            fortuneSquareSprite, transform.position, Quaternion.identity);
+        fortuneSquare.
+            GetComponent<FortuneSquare>().SetFortuneNumber(fortuneNumber);
     }
 }
