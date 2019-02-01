@@ -10,12 +10,12 @@ public class GameStatus : MonoBehaviour {
     [SerializeField] int pointPerBlockDestroyed = 40;
     
     //cached reference
-    [SerializeField] TextMeshProUGUI timeText;
-    [SerializeField] TextMeshProUGUI levelText;
-    [SerializeField] TextMeshProUGUI scoreText;
-    
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI levelText;
+    public TextMeshProUGUI scoreText;
+
     // state variables
-    [SerializeField] int currentScore;
+    public int currentScore;
 
     
 
