@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+public class Frame : MonoBehaviour {
+
+    // config parameter
+    float posY0;
+    float posY1;
+    [SerializeField] float speedY0 = 400f;
+
+    //cached reference
+    [SerializeField] float posX;
+    [SerializeField] float posY;
+    [SerializeField] float IntroPosY0;
+
+    [SerializeField] GameObject IntroFrame;
+    [SerializeField] GameObject WinFrame;
+    [SerializeField] GameObject LoseFrame;
+    GameObject activeFrame;
+
+    // state variables
+    private float step;
+    float posX0;
+    Vector2 target;
+    [SerializeField] bool isWinFrameActive;     
+    [SerializeField] bool isLoseFrameActive;
+
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "Introduction")
+        {
+            posX0 = IntroFrame.GetComponent<Rigidbody2D>().position.x;
+            posY0 = posX0 * 8f / 4f;
+            target = new Vector2(posX0, posX0 * 3f / 4f);
+        }
+    }
+
+    public void ResetFrame()
+    {
+        posX0 = WinFrame.GetComponent<Rigidbody2D>().position.x;
+        posY0 = posX0 * 8f / 4f;
+        target = new Vector2(posX0, posX0 * 3f / 4f);
+        WinFrame.transform.position = new Vector2(posX0, posY0);
+        LoseFrame.transform.position = new Vector2(posX0, posY0);
+    }
+
+    // Update is called once per frame
+    private void Update ()
+    {
+        if (SceneManager.GetActiveScene().name != "Introduction")
+        {
+            DropFrame();
+        }
+        else
+        {
+            step = speedY0 * Time.deltaTime;
+            IntroFrame.transform.position = Vector2.MoveTowards
+                (IntroFrame.transform.position, target, step);
+        }
+    }
+    public void DropLoseFrame()
+    {
+        isLoseFrameActive = true;
+    }
+    public void DropWinFrame()
+    {
+        isWinFrameActive = true;
+    }
+
+    private void DropFrame()
+    {
+        if (isWinFrameActive || isLoseFrameActive)
+        {
+            if (isWinFrameActive)
+            {
+                activeFrame = WinFrame;
+            }
+            else if (isLoseFrameActive)
+            {
+                activeFrame = LoseFrame;
+            }
+
+            if (activeFrame.GetComponent<Rigidbody2D>().position != target)
+            {
+                step = speedY0 * Time.deltaTime;
+                activeFrame.transform.position = Vector2.MoveTowards
+                    (activeFrame.transform.position, target, step);
+            }
+            else
+            {
+                isWinFrameActive = false;
+                isLoseFrameActive = false;
+            }
+            //Debug.Log("active: " + activeFrame.name 
+            //    + activeFrame.GetComponent<Rigidbody2D>().position);
+        }
+    }
+}
