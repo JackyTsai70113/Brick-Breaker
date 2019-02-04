@@ -1,27 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-
     // config parameter
-    [SerializeField] float screenWidthInUnits;
-    [SerializeField] float minX;
-    [SerializeField] float maxX;
+    public float screenWidthInUnits;
+    public float minX;
+    public float maxX;
 
     //cached reference
     [SerializeField] float paddleSizeX;
     [SerializeField] float paddleSizeY;
     [SerializeField] float paddleSizeZ;
-    [SerializeField] AudioClip goodFortuneSquareSound;
-    [SerializeField] AudioClip badFortuneSquareSound;
 
     // state variables
-    [SerializeField] bool isAutoPlayEnabled;
+    Coroutine changeScaleXCoroutine;
+    public bool isAutoPlayEnabled;
     Ball ball;
     Level level;
-    [SerializeField] float fortuneTimeLength;
-    [SerializeField] float paddleScaleXChangeStartingTime;
-    [SerializeField] bool ifPaddleScaleXChange;
 
     void Start()
     {
@@ -35,7 +32,6 @@ public class Paddle : MonoBehaviour
         }
         ball = FindObjectOfType<Ball>();
         level = FindObjectOfType<Level>();
-        fortuneTimeLength = 3f;
     }
 
     // Update is called once per frame
@@ -43,21 +39,9 @@ public class Paddle : MonoBehaviour
     {
         if (level.IsLevelWorking())
         {
-            transform.position = new Vector2
-                (Mathf.Clamp(PaddlePosX(isAutoPlayEnabled), minX, maxX),
-                 transform.position.y);
-            if (ifPaddleScaleXChange && 
-                Time.time - paddleScaleXChangeStartingTime >= fortuneTimeLength)
-            {
-                ifPaddleScaleXChange = false;
-                transform.localScale = new Vector3
-                    (paddleSizeX, paddleSizeY, paddleSizeZ);
-            }
-        }
-        else if (!level.IsLevelWorking())
-        {
-            transform.position = new Vector2
-                (transform.position.x, transform.position.y);
+            transform.position = new Vector2(
+                Mathf.Clamp(PaddlePosX(isAutoPlayEnabled), minX, maxX),
+                transform.position.y);
         }
     }
 
@@ -66,28 +50,31 @@ public class Paddle : MonoBehaviour
     {
         if (isPaddleAuto)
         {
+            if (ball == null)
+            {
+                ball = FindObjectOfType<Ball>();
+            }
             return ball.transform.position.x;
         }
+
         else
-        {
             return Input.mousePosition.x / Screen.width * screenWidthInUnits
                 - screenWidthInUnits / 2;
-        }
     }
 
-    public void ChangePaddleScaleX(float PaddleSizeScaleX)
+    public void CheckForChangingScaleX(float sizeScale, float duration)
     {
-        ifPaddleScaleXChange = true;
-        paddleScaleXChangeStartingTime = Time.time;
+        if (changeScaleXCoroutine != null)
+            StopCoroutine(changeScaleXCoroutine);
+        changeScaleXCoroutine = StartCoroutine(ChangeScaleX(sizeScale, duration));
+    }
+
+    public IEnumerator ChangeScaleX(float PaddleSizeScaleX, float duration)
+    {
         transform.localScale = new Vector3
             (paddleSizeX * PaddleSizeScaleX, paddleSizeY, paddleSizeZ);
-        if (PaddleSizeScaleX > 1)
-        {
-            level.playSoundEffect("good");
-        }
-        else if (PaddleSizeScaleX < 1)
-        {
-            level.playSoundEffect("bad");
-        }
+        yield return new WaitForSeconds(duration);
+        transform.localScale = new Vector3
+                    (paddleSizeX, paddleSizeY, paddleSizeZ);
     }
 }

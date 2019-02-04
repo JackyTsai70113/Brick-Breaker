@@ -5,49 +5,36 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    //determine breakableBlocks ball
+    // determine breakable blocks
     // config parameters
-    [Range(0.1f, 10f)] [SerializeField] public float gameSpeed = 1f;
+    [Range(0.1f, 10f)] public float gameSpeed = 1f;
     [SerializeField] int breakableBlocks;
 
     // state variables
     private float startingTime;
     private float playingTime;
     private bool isWorking;
-    [SerializeField] int ballNumber;
-    [SerializeField] bool ifSeparatedPaddleActivate;
+    public int ballNumber;
+    Coroutine SeparatePaddleCoroutine;
 
-    private float paddleSeparateStartingTime;
-    private float paddleSeparateTimeLength = 3f;
-    private bool ifPaddleSeparate;
-
-    private float SFXStartingTime;
-    private float SFXTimeLength = 1f;
-    private bool ifSFXStart;
     // cached reference
     GameStatus gameStatus;
-    Frame frame;
-    AudioSource myAudioSource;
-    [SerializeField] GameObject paddle;
-    [SerializeField] GameObject separatedPaddle;
-    [SerializeField] AudioClip goodFortuneSquareSound;
-    [SerializeField] AudioClip badFortuneSquareSound;
-    
-
-
+    FrameController frameController;
+    public GameObject paddle;
+    public GameObject separatedPaddle;
+    public AudioClip goodFortuneSquareSound;
+    public AudioClip badFortuneSquareSound;
 
     public void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
-        frame = FindObjectOfType<Frame>();
+        frameController = FindObjectOfType<FrameController>();
+
+        frameController.ResetFrame();
         startingTime = Time.time;
         isWorking = true;
-        frame.ResetFrame();
         gameStatus.SetLevelText();
-        gameStatus.SetTimeText(0f);
-        ballNumber = 1;
-        SeparatePaddle(ifSeparatedPaddleActivate);
-        myAudioSource = GetComponent<AudioSource>();
+        separatedPaddle.SetActive(false);
     }
 
     private void Update()
@@ -55,22 +42,10 @@ public class Level : MonoBehaviour
         Time.timeScale = gameSpeed;
         playingTime = Time.time - startingTime;
         if (isWorking)
-        {
             gameStatus.SetTimeText(playingTime);
-            if (ifSFXStart && Time.time - SFXStartingTime >= SFXTimeLength)
-            {
-                ifSFXStart = false;
-                myAudioSource.Stop();
-            }
-            if (ifSeparatedPaddleActivate &&
-                Time.time - paddleSeparateStartingTime >= paddleSeparateTimeLength)
-            {
-                ifSeparatedPaddleActivate = false;
-                SeparatePaddle(ifSeparatedPaddleActivate);
-            }
-        }
 
     }
+
     public void CountBlocks()
     {
         breakableBlocks++;
@@ -82,14 +57,18 @@ public class Level : MonoBehaviour
         gameStatus.AddtoScore();
         if (breakableBlocks <= 0)
         {
-            frame.DropWinFrame();
-            StopLevelWorking();
+            StopWorking();
+            frameController.DropWinFrame();
         }
     }
 
-    public void StopLevelWorking()
+    public void StopWorking()
     {
         isWorking = false;
+        foreach (Ball ball in FindObjectsOfType<Ball>())
+            ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        foreach (FortuneSquare fs in FindObjectsOfType<FortuneSquare>())
+            fs.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public bool IsLevelWorking()
@@ -97,7 +76,7 @@ public class Level : MonoBehaviour
         return isWorking;
     }
 
-    public int ReturnBallNumber()
+    public int GetBallNumber()
     {
         return ballNumber;
     }
@@ -112,39 +91,37 @@ public class Level : MonoBehaviour
         ballNumber--;
     }
 
-    public void MakePaddleSeparated(bool ifActivate)
+    public void CheckForSeparatingPaddle(float duration)
     {
-        ifSeparatedPaddleActivate = ifActivate;
-        playSoundEffect("bad");
-        paddleSeparateStartingTime = Time.time;
-        SeparatePaddle(ifSeparatedPaddleActivate);
-    }
-    public void SeparatePaddle(bool ifSeparatedPaddleActivate)
-    {
-        //Debug.Log("SeparatePaddle(" + ifSeparatedPaddleActivate + ")"); //還有問題
-        paddle.SetActive(!(ifSeparatedPaddleActivate));
-        separatedPaddle.SetActive(ifSeparatedPaddleActivate);
+        if (SeparatePaddleCoroutine != null)
+            StopCoroutine(SeparatePaddleCoroutine);
+        SeparatePaddleCoroutine = StartCoroutine(SeparatePaddle(duration));
     }
 
-
-    public void playSoundEffect(string soundType)
+    private IEnumerator SeparatePaddle(float duration)
     {
-        AudioClip clip = null;
-        ifSFXStart = true;
-        SFXStartingTime = Time.time;
-        if (soundType == "good")
-        {
-            clip = goodFortuneSquareSound;
-        }
-        else if (soundType == "bad")
-        {
-            clip = badFortuneSquareSound;
-        }
-        myAudioSource.PlayOneShot(clip);
+        paddle.SetActive(false);
+        separatedPaddle.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        paddle.SetActive(true);
+        separatedPaddle.SetActive(false);
     }
 
+    public void TriggerGoodFortuneSquareSound()
+    {
+        AudioSource.PlayClipAtPoint(
+            goodFortuneSquareSound, Camera.main.transform.position);
+    }
 
+    public void TriggerBadFortuneSquareSound()
+    {
+        AudioSource.PlayClipAtPoint(
+            goodFortuneSquareSound, Camera.main.transform.position);
+    }
 
-    
-
+    public void ResetSizeOfAllBalls(float sizeX, float sizeY, float sizeZ)
+    {
+        foreach (Ball ball in FindObjectsOfType<Ball>())
+            ball.transform.localScale = new Vector3(sizeX, sizeY, sizeZ);
+    }
 }

@@ -5,11 +5,13 @@ using UnityEngine;
 public class LoseCollider : MonoBehaviour
 {
     //cached reference
-    Frame theFrame;
+    public AudioClip audioClip;
+    FrameController frameController;
+
     Level level;
     void Start()
     {
-        theFrame = FindObjectOfType<Frame>();
+        frameController = FindObjectOfType<FrameController>();
         level = FindObjectOfType<Level>();
     }
 
@@ -22,17 +24,14 @@ public class LoseCollider : MonoBehaviour
         if (other.gameObject.tag == "Ball")
         {
             level.MinusBallNumber();
-            if (level.ReturnBallNumber() <= 0)
+            if (level.GetBallNumber() <= 0)
             {
-                other.GetComponent<Ball>().StopMoving();
-                GetComponent<AudioSource>().Play();
-                theFrame.DropLoseFrame();
-                level.StopLevelWorking();
+                AudioSource.PlayClipAtPoint(
+                    audioClip, Camera.main.transform.position);
+                frameController.DropLoseFrame();
+                level.StopWorking();
             }
-            else if (level.ReturnBallNumber() > 1)
-            {
-                Destroy(other.gameObject);
-            }
+            Destroy(other.gameObject);
         }
         else if(other.gameObject.tag == "Fortune Square")
         {

@@ -11,6 +11,7 @@ TagManager:
   - Lose Bottom Collider
   - Ball
   - Separated Paddle
+  - Collider
   layers:
   - Default
   - TransparentFX

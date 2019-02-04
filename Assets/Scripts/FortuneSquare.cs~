@@ -7,6 +7,7 @@ public class FortuneSquare : MonoBehaviour
 {
 
     //cached reference
+    [SerializeField] float duration;
     [SerializeField] float biggerPaddleSizeScaleX;
     [SerializeField] float smallerPaddleSizeScaleX;
     [SerializeField] float biggerBallSizeScale;
@@ -14,7 +15,7 @@ public class FortuneSquare : MonoBehaviour
     [SerializeField] float speed;
 
     // cached reference
-    Ball ball;
+    public GameObject ballPrefab;
     Paddle paddle;
     Level level;
     //AudioSource myAudioSource;
@@ -24,7 +25,6 @@ public class FortuneSquare : MonoBehaviour
     private int fortuneNumber;
     void Start()
     {
-        ball = FindObjectOfType<Ball>();
         paddle = FindObjectOfType<Paddle>();
         level = FindObjectOfType<Level>();
         GetComponent<Rigidbody2D>().velocity = new Vector2(0f, speed);
@@ -46,14 +46,17 @@ public class FortuneSquare : MonoBehaviour
         else if (other.gameObject.tag == "Breakable"
             || other.gameObject.tag == "Unbreakable"
             || other.gameObject.tag == "Ball"
-            || other.gameObject.tag == "Fortune Square")
+            || other.gameObject.tag == "Fortune Square"
+            || other.gameObject.tag == "Collider")
         {
 
         }
         else
         {
-            Debug.LogError("Fortune Square collider with " + other.gameObject.tag);
+            Debug.LogError("Fortune Square collider with " + other.gameObject.transform.position);
+            Debug.LogError(other.gameObject.name);
         }
+
     }
 
     public void SetFortuneNumber(int fortuneNumber)
@@ -76,31 +79,42 @@ public class FortuneSquare : MonoBehaviour
         switch (fortuneNumber)
         {
             case 0:
-                biggerPaddleSizeScaleX = 1.5f;
-                paddle.ChangePaddleScaleX(biggerPaddleSizeScaleX);
+                level.TriggerGoodFortuneSquareSound();
+                StartCoroutine(paddle.ChangeScaleX(biggerPaddleSizeScaleX, duration));
                 break;
             case 1:
-                smallerPaddleSizeScaleX = 0.5f;
-                paddle.ChangePaddleScaleX(smallerPaddleSizeScaleX);
+                level.TriggerBadFortuneSquareSound();
+                StartCoroutine(paddle.ChangeScaleX(smallerPaddleSizeScaleX, duration));
                 break;
-            case 2:            
-                biggerPaddleSizeScaleX = 1.5f;
-                ball.ChangeBallScale(biggerBallSizeScale);
+            case 2:
+                level.TriggerGoodFortuneSquareSound();
+                foreach (Ball ball in FindObjectsOfType<Ball>())
+                    ball.CheckForChangingScale(biggerBallSizeScale, duration);
                 break;
             case 3:
-                smallerPaddleSizeScaleX = 0.5f;
-                ball.ChangeBallScale(smallerBallSizeScale);
+                level.TriggerBadFortuneSquareSound();
+                foreach (Ball ball in FindObjectsOfType<Ball>())
+                   ball.CheckForChangingScale(smallerBallSizeScale, duration);
                 break;
             case 4:
-                ball.MultiBall();
+                Ball[] balls = FindObjectsOfType<Ball>();
+                if (balls.Length >= 9)
+                    break;
+                level.TriggerGoodFortuneSquareSound();
+                for (int i = 0; i < 3 && i < balls.Length;i++)
+                {
+                    balls[i].MultiBall();
+                }
                 break;
             case 5:
-                level.MakePaddleSeparated(true);
+                level.TriggerBadFortuneSquareSound();
+                level.CheckForSeparatingPaddle(duration);
                 break;
             default:
                 Debug.Log("Nothing.");
                 break;
         }
+        Destroy(gameObject);
     }
 
 

@@ -28,19 +28,16 @@ public class GameStatus : MonoBehaviour {
             Destroy(gameObject);
         }
         else
-        {
             DontDestroyOnLoad(gameObject);
-        }
-
     }
 
     private void Start()
     {
-        setCurrentScoreZero();
+        SetCurrentScoreZero();
         
     }
 
-    public void setCurrentScoreZero()
+    public void SetCurrentScoreZero()
     {
         currentScore = 0;
         SetScoreText();
@@ -49,11 +46,6 @@ public class GameStatus : MonoBehaviour {
     void Update()
     {
         SetLevelText();
-    }
-
-    public void ResetGame()
-    {
-        Destroy(gameObject);
     }
 
     // TimeText
@@ -77,6 +69,6 @@ public class GameStatus : MonoBehaviour {
 
     public void SetScoreText()
     {
-        scoreText.text = "Score:" + currentScore.ToString();
+        scoreText.text = currentScore.ToString();
     }
 }

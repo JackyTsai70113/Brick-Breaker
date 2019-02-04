@@ -6,6 +6,7 @@ public class Block : MonoBehaviour
 {
 
     // config parameters
+    [SerializeField] AudioClip unBreakSound;
     [SerializeField] AudioClip breakSound;
     [SerializeField] ParticleSystem blockSparklesVFX;
     [SerializeField] GameObject fortuneSquareSprite;
@@ -15,7 +16,7 @@ public class Block : MonoBehaviour
     Level level;
 
     // state variables
-    [SerializeField] int timesHit; // to do only serialized for debug purposes
+    [SerializeField] int timesHit; // only serialized for debug purposes
     int fortuneNumber;
     // Use this for initialization
     void Start()
@@ -23,7 +24,7 @@ public class Block : MonoBehaviour
         level = FindObjectOfType<Level>();
         //Resources.Load<Sprite>("paddle");
         CountBreakableBlocks();
-        fortuneNumber = Random.Range(0, 20);
+        fortuneNumber = Random.Range(2, 5);
     }
 
     private void CountBreakableBlocks()
@@ -37,30 +38,33 @@ public class Block : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D Collision)
     {
         if (tag == "Breakable")
-        {
             HandleHit();
-        }
     }
 
     private void HandleHit()
     {
         timesHit++;
-        if (timesHit == hitSprites.Length + 1)
+        if (timesHit > hitSprites.Length)
             DestroyBlock();
         else
+        {
+            AudioSource.PlayClipAtPoint
+                (unBreakSound, Camera.main.transform.position);
             GetComponent<SpriteRenderer>().sprite = hitSprites[timesHit - 1];
+        }
+
     }
 
     private void DestroyBlock()
     {
-        PlayBlockDestroySFX();
-        level.BlockDestroyed();
-        TriggerSparklesVFX();
         TriggerLuckySquare();
+        TriggerBlockDestroySFX();
+        TriggerSparklesVFX();
+        level.BlockDestroyed();
         Destroy(gameObject);
     }
 
-    private void PlayBlockDestroySFX()
+    private void TriggerBlockDestroySFX()
     {
         AudioSource.PlayClipAtPoint
             (breakSound, Camera.main.transform.position);
@@ -70,12 +74,12 @@ public class Block : MonoBehaviour
     {
         ParticleSystem sparkles = Instantiate
             (blockSparklesVFX, transform.position, transform.rotation);
-        Destroy(sparkles, 1f);
+        Destroy(sparkles, 0.5f);
     }
 
     private void TriggerLuckySquare()
     {
-        GameObject fortuneSquare = (GameObject)Instantiate(
+        GameObject fortuneSquare = Instantiate(
             fortuneSquareSprite, transform.position, Quaternion.identity);
         fortuneSquare.
             GetComponent<FortuneSquare>().SetFortuneNumber(fortuneNumber);

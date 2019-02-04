@@ -119,11 +119,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96bcc8e63f2c2f546af632361b131da1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unBreakSound: {fileID: 8300000, guid: 6e760405cc793fc41bffb1ec9ae32bc5, type: 3}
   breakSound: {fileID: 8300000, guid: ae7ce8a67c2637d4bb1a9a4889986b88, type: 3}
-  blockSparklesVFX: {fileID: 100000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
+  blockSparklesVFX: {fileID: 19800000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
   fortuneSquareSprite: {fileID: 1833237728258770, guid: 7dd5f12d8f9334448a26dd2c99241a51,
     type: 3}
   hitSprites:
   - {fileID: 21300000, guid: 1086626ffe0ef9346ba690cfbfb47308, type: 3}
-  speedOfLuckySquare: -3
   timesHit: 0
