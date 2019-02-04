@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xPush: 12
   yPush: 16
-  ballSounds: {fileID: 8300000, guid: ae7ce8a67c2637d4bb1a9a4889986b88, type: 3}
   randomFactor: 0.5
   ballPrefab: {fileID: 1593879307316342}
+  paddleCollisionAudio: {fileID: 8300000, guid: 49d5c9faee60a26469be9ee1bccc1a36,
+    type: 3}

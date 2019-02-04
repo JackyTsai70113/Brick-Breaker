@@ -14,26 +14,21 @@ public class FortuneSquare : MonoBehaviour
     [SerializeField] float smallerBallSizeScale;
     [SerializeField] float speed;
 
-    // cached reference
-    public GameObject ballPrefab;
-    Paddle paddle;
+    // cached reference]
     Level level;
-    //AudioSource myAudioSource;
-    [SerializeField] TextMeshPro fortuneNumberText;
 
     // state variables
     private int fortuneNumber;
     void Start()
     {
-        paddle = FindObjectOfType<Paddle>();
         level = FindObjectOfType<Level>();
         GetComponent<Rigidbody2D>().velocity = new Vector2(0f, speed);
-
-        //myAudioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (level.IsLevelWorking() == false)
+            Destroy(gameObject);
         if (other.gameObject.tag == "Paddle"
             || other.gameObject.tag == "Separated Paddle")
         {
@@ -75,16 +70,17 @@ public class FortuneSquare : MonoBehaviour
 
     private void TriggerFortune()
     {
-        level = FindObjectOfType<Level>();
         switch (fortuneNumber)
         {
             case 0:
                 level.TriggerGoodFortuneSquareSound();
-                StartCoroutine(paddle.ChangeScaleX(biggerPaddleSizeScaleX, duration));
+                StartCoroutine(FindObjectOfType<Paddle>().
+                    ChangeScaleX(biggerPaddleSizeScaleX, duration));
                 break;
             case 1:
                 level.TriggerBadFortuneSquareSound();
-                StartCoroutine(paddle.ChangeScaleX(smallerPaddleSizeScaleX, duration));
+                StartCoroutine(FindObjectOfType<Paddle>().
+                    ChangeScaleX(smallerPaddleSizeScaleX, duration));
                 break;
             case 2:
                 level.TriggerGoodFortuneSquareSound();

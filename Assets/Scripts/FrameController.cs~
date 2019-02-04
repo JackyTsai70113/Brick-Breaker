@@ -22,8 +22,6 @@ public class FrameController : MonoBehaviour {
     float posY0;
     float posY1;
     Vector2 target;
-    [SerializeField] bool isWinFrameActive;     
-    [SerializeField] bool isLoseFrameActive;
 
     private void Start()
     {
@@ -61,9 +59,6 @@ public class FrameController : MonoBehaviour {
     {
         if (activeFrame != null)
         {
-            Debug.Log(activeFrame.name
-                + activeFrame.transform.position
-                + target);
             if (Vector2.Distance(activeFrame.transform.position, target) > 0.001)
             {
                 step = speed * Time.deltaTime;

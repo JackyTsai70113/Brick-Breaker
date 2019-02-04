@@ -45,13 +45,12 @@ public class GameStatus : MonoBehaviour {
 
     void Update()
     {
-        SetLevelText();
     }
 
     // TimeText
-    public void SetTimeText(float playingTime)
+    public void SetTimeText(int playingTime)
     {
-        timeText.text = ((int)playingTime).ToString();
+        timeText.text = playingTime.ToString();
     }
 
     // LevelText

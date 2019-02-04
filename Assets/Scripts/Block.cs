@@ -8,7 +8,7 @@ public class Block : MonoBehaviour
     // config parameters
     [SerializeField] AudioClip unBreakSound;
     [SerializeField] AudioClip breakSound;
-    [SerializeField] ParticleSystem blockSparklesVFX;
+    [SerializeField] GameObject blockSparklesVFX;
     [SerializeField] GameObject fortuneSquareSprite;
     [SerializeField] Sprite[] hitSprites;
 
@@ -24,7 +24,7 @@ public class Block : MonoBehaviour
         level = FindObjectOfType<Level>();
         //Resources.Load<Sprite>("paddle");
         CountBreakableBlocks();
-        fortuneNumber = Random.Range(2, 5);
+        fortuneNumber = Random.Range(0, 2);
     }
 
     private void CountBreakableBlocks()
@@ -52,7 +52,6 @@ public class Block : MonoBehaviour
                 (unBreakSound, Camera.main.transform.position);
             GetComponent<SpriteRenderer>().sprite = hitSprites[timesHit - 1];
         }
-
     }
 
     private void DestroyBlock()
@@ -72,7 +71,7 @@ public class Block : MonoBehaviour
 
     private void TriggerSparklesVFX()
     {
-        ParticleSystem sparkles = Instantiate
+        GameObject sparkles = Instantiate
             (blockSparklesVFX, transform.position, transform.rotation);
         Destroy(sparkles, 0.5f);
     }

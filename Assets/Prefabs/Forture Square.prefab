@@ -442,13 +442,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 3
-  biggerPaddleSizeScaleX: 1.5
-  smallerPaddleSizeScaleX: 0.5
+  biggerPaddleSizeScaleX: 1.2
+  smallerPaddleSizeScaleX: 0.8
   biggerBallSizeScale: 2
   smallerBallSizeScale: 0.7
   speed: -3
-  ballPrefab: {fileID: 1593879307316342, guid: 9ecf3e3b44ad3e64cb0226f9b492cfc0, type: 3}
-  fortuneNumberText: {fileID: 114887998614522328}
 --- !u!222 &222726293497560810
 CanvasRenderer:
   m_ObjectHideFlags: 0

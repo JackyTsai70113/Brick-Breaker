@@ -12,7 +12,7 @@ public class Level : MonoBehaviour
 
     // state variables
     private float startingTime;
-    private float playingTime;
+    private int playingTime;
     private bool isWorking;
     public int ballNumber;
     Coroutine SeparatePaddleCoroutine;
@@ -22,6 +22,7 @@ public class Level : MonoBehaviour
     FrameController frameController;
     public GameObject paddle;
     public GameObject separatedPaddle;
+    public AudioClip loseAudio;
     public AudioClip goodFortuneSquareSound;
     public AudioClip badFortuneSquareSound;
 
@@ -30,6 +31,21 @@ public class Level : MonoBehaviour
         gameStatus = FindObjectOfType<GameStatus>();
         frameController = FindObjectOfType<FrameController>();
 
+        gameStatus.SetLevelText();
+        Reset();
+    }
+
+    private void Update()
+    {
+        Time.timeScale = gameSpeed;
+        playingTime = (int)(Time.time - startingTime);
+        if (isWorking)
+            gameStatus.SetTimeText(playingTime);
+
+    }
+
+    private void Reset()
+    {
         frameController.ResetFrame();
         startingTime = Time.time;
         isWorking = true;
@@ -37,23 +53,16 @@ public class Level : MonoBehaviour
         separatedPaddle.SetActive(false);
     }
 
-    private void Update()
-    {
-        Time.timeScale = gameSpeed;
-        playingTime = Time.time - startingTime;
-        if (isWorking)
-            gameStatus.SetTimeText(playingTime);
-
-    }
-
     public void CountBlocks()
     {
         breakableBlocks++;
+        //Debug.Log("++ : " + breakableBlocks + " Blocks");
     }
 
     public void BlockDestroyed()
     {
         breakableBlocks--;
+        //Debug.Log("-- : " + breakableBlocks + " Blocks");
         gameStatus.AddtoScore();
         if (breakableBlocks <= 0)
         {
@@ -67,8 +76,6 @@ public class Level : MonoBehaviour
         isWorking = false;
         foreach (Ball ball in FindObjectsOfType<Ball>())
             ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        foreach (FortuneSquare fs in FindObjectsOfType<FortuneSquare>())
-            fs.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public bool IsLevelWorking()
@@ -89,6 +96,13 @@ public class Level : MonoBehaviour
     public void MinusBallNumber()
     {
         ballNumber--;
+        if (GetBallNumber() <= 0)
+        {
+            AudioSource.PlayClipAtPoint(
+                loseAudio, Camera.main.transform.position);
+            frameController.DropLoseFrame();
+            StopWorking();
+        }
     }
 
     public void CheckForSeparatingPaddle(float duration)

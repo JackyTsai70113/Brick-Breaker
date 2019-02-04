@@ -5,13 +5,10 @@ using UnityEngine;
 public class LoseCollider : MonoBehaviour
 {
     //cached reference
-    public AudioClip audioClip;
-    FrameController frameController;
-
     Level level;
+
     void Start()
     {
-        frameController = FindObjectOfType<FrameController>();
         level = FindObjectOfType<Level>();
     }
 
@@ -24,13 +21,6 @@ public class LoseCollider : MonoBehaviour
         if (other.gameObject.tag == "Ball")
         {
             level.MinusBallNumber();
-            if (level.GetBallNumber() <= 0)
-            {
-                AudioSource.PlayClipAtPoint(
-                    audioClip, Camera.main.transform.position);
-                frameController.DropLoseFrame();
-                level.StopWorking();
-            }
             Destroy(other.gameObject);
         }
         else if(other.gameObject.tag == "Fortune Square")

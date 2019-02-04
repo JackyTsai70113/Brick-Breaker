@@ -5,9 +5,6 @@ public class Ball : MonoBehaviour {
     // config params
     public float xPush;
     public float yPush;
-    public AudioClip ballSounds;
-    public float randomFactor;
-
 
     //Cached component references
     public GameObject ballPrefab;
@@ -16,9 +13,10 @@ public class Ball : MonoBehaviour {
     float sizeZ;
     Rigidbody2D myRigidbody2D;
     Level level;
-    Paddle paddle;
+    GameObject paddle;
 
     // state variables
+    public AudioClip paddleCollisionAudio;
     Coroutine changeScaleCoroutine;
     Vector2 paddleToBallVector;
     bool hasStarted;
@@ -32,7 +30,7 @@ public class Ball : MonoBehaviour {
         level = FindObjectOfType<Level>();
         level.AddBallNumber();
 
-        paddle = FindObjectOfType<Paddle>();       
+        paddle = level.paddle;     
         paddleToBallVector = 
             transform.position - paddle.transform.position;
         myRigidbody2D = GetComponent<Rigidbody2D>();
@@ -78,22 +76,15 @@ public class Ball : MonoBehaviour {
         paddle.transform.position.x, 
             paddle.transform.position.y);
         transform.position = paddlePos + paddleToBallVector;
+        //Debug.Log("kk" + paddlePos + " " + transform.position);
     }
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        //f(myRigidbody2D.velocity.magnitude)
-        /*Vector2 velocityTweak = new Vector2
-            (Random.Range(-randomFactor, randomFactor),
-            Random.Range(-randomFactor, randomFactor));
-        if (hasStarted)
-        {
+        if (hasStarted && ( 
+            collision.gameObject.tag == "Paddle" ||
+            collision.gameObject.tag == "Separated Paddle"))
             AudioSource.PlayClipAtPoint(
-                ballSounds, Camera.main.transform.position);
-            if (level.IsLevelWorking())
-            {
-                GetComponent<Rigidbody2D>().velocity += velocityTweak;
-            }
-        }*/
+                paddleCollisionAudio, Camera.main.transform.position);
     }
 
     public void MultiBall()

@@ -40,7 +40,10 @@ public class Paddle : MonoBehaviour
         if (level.IsLevelWorking())
         {
             transform.position = new Vector2(
-                Mathf.Clamp(PaddlePosX(isAutoPlayEnabled), minX, maxX),
+                Mathf.Clamp(
+                    PaddlePosX(isAutoPlayEnabled),
+                    minX + transform.localScale.x / 2,
+                    maxX - transform.localScale.x / 2),
                 transform.position.y);
         }
     }
