@@ -18,25 +18,25 @@ public class FrameController : MonoBehaviour {
 
     // state variables
     float step;
-    float posX0;
-    float posY0;
-    float posY1;
+    public float posX0;
+    public float posY0;
+    public float posY1;
+    public float posX;
+    public float posY;
     Vector2 target;
 
     private void Start()
     {
-        float canvasHeight = GetComponent<RectTransform>().rect.height;
-        float frameHeight = winFrame.GetComponent<RectTransform>().rect.height;
-        float canvasLocalScaleY = GetComponent<RectTransform>().localScale.y;
         posX0 = winFrame.transform.position.x;
-        posY0 = (canvasHeight + frameHeight / 2) * canvasLocalScaleY;
-        posY1 = canvasHeight / 2 * canvasLocalScaleY;
-        target = new Vector2(posX0, posY1);
         ResetFrame();
     }
 
     public void ResetFrame()
     {
+        float canvasHeight = GetComponent<RectTransform>().rect.height;
+        float frameHeight = winFrame.GetComponent<RectTransform>().rect.height;
+        float canvasLocalScaleY = GetComponent<RectTransform>().localScale.y;
+        posY0 = (canvasHeight + frameHeight / 2) * canvasLocalScaleY;
         winFrame.transform.position = new Vector2(posX0, posY0);
         loseFrame.transform.position = new Vector2(posX0, posY0);
     }
@@ -59,6 +59,12 @@ public class FrameController : MonoBehaviour {
     {
         if (activeFrame != null)
         {
+            float canvasHeight = GetComponent<RectTransform>().rect.height;
+            float canvasLocalScaleY = GetComponent<RectTransform>().localScale.y;
+            posY1 = canvasHeight / 2 * canvasLocalScaleY;
+            target = new Vector2(posX0, posY1);
+            posX = activeFrame.transform.position.x;
+            posY = activeFrame.transform.position.y;
             if (Vector2.Distance(activeFrame.transform.position, target) > 0.001)
             {
                 step = speed * Time.deltaTime;

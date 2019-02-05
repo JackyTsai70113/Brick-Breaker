@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour {
 
     // cached reference
-    GameStatus gameStatus;
-    FrameController frame;
 
     private void Start()
     {
@@ -16,20 +14,23 @@ public class SceneLoader : MonoBehaviour {
     {
         FindObjectOfType<GameStatus>().SetCurrentScoreZero();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        
     }
+
     public void LoadNextScene()
     {
         int currentSceneIndex = 
             SceneManager.GetActiveScene().buildIndex;
+        if (currentSceneIndex == 3)
+            Destroy(FindObjectOfType<GameStatus>());
         SceneManager.LoadScene(currentSceneIndex + 1);
-            
     }
+
     public void LoadIntroScene()
     {
         Destroy(FindObjectOfType<GameStatus>());
         SceneManager.LoadScene(0);
     }
+
     public void QuitApplication()
     {
         Application.Quit();

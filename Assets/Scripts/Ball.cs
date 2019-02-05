@@ -12,53 +12,58 @@ public class Ball : MonoBehaviour {
     float sizeY;
     float sizeZ;
     Rigidbody2D myRigidbody2D;
-    Level level;
-    GameObject paddle;
+    public Level level;
+    Transform paddle;
 
     // state variables
     public AudioClip paddleCollisionAudio;
     Coroutine changeScaleCoroutine;
     Vector2 paddleToBallVector;
     bool hasStarted;
-    float minVelocity;
+    float minVelocityMagnitude;
 
     void Start()
     {
         sizeX = 1.5f;
         sizeY = 1.5f;
         sizeZ = 1f;
-        level = FindObjectOfType<Level>();
+        level = GetComponentInParent<Level>();
         level.AddBallNumber();
-
-        paddle = level.paddle;     
+        paddle = level.paddle.transform;     
         paddleToBallVector = 
             transform.position - paddle.transform.position;
         myRigidbody2D = GetComponent<Rigidbody2D>();
-        minVelocity = Mathf.Sqrt(
-            Mathf.Pow(xPush, 2) + Mathf.Pow(yPush, 2));
+        minVelocityMagnitude = new Vector2(xPush, yPush).magnitude;
     }
 
     // Update is called once per frame
     void Update()
     {
         if (level.IsLevelWorking())
+        {
             if (!hasStarted)
             {
                 LockBallToPaddle();
                 LauchOnMouseClick();
             }
-            else if (Mathf.Abs(myRigidbody2D.velocity.x) < 1)
+            else if (Mathf.Abs(myRigidbody2D.velocity.x) < 2)
             {
-                myRigidbody2D.velocity += 
+                myRigidbody2D.velocity +=
                     new Vector2(1, 0) * Mathf.Sign(myRigidbody2D.velocity.x);
             }
-            else if (Mathf.Abs(myRigidbody2D.velocity.y) < 1)
+            else if (Mathf.Abs(myRigidbody2D.velocity.y) < 2)
             {
                 myRigidbody2D.velocity +=
                     new Vector2(0, 1) * Mathf.Sign(myRigidbody2D.velocity.y);
             }
-            else if (myRigidbody2D.velocity.magnitude < minVelocity)
-                myRigidbody2D.velocity *= (minVelocity / myRigidbody2D.velocity.magnitude);
+            else if (myRigidbody2D.velocity.magnitude < minVelocityMagnitude)
+                myRigidbody2D.velocity *= minVelocityMagnitude / myRigidbody2D.velocity.magnitude;
+            else if (myRigidbody2D.velocity.magnitude > 2 * minVelocityMagnitude)
+                myRigidbody2D.velocity *= minVelocityMagnitude / myRigidbody2D.velocity.magnitude;
+        }
+        else
+            myRigidbody2D.velocity = Vector2.zero;
+
     }
 
     private void LauchOnMouseClick()
@@ -101,7 +106,8 @@ public class Ball : MonoBehaviour {
     {
         Vector2 myVelocity = GetComponent<Rigidbody2D>().velocity;
         GameObject ballObject = Instantiate
-            (ballPrefab, transform.position, transform.rotation);
+            (ballPrefab, transform.position, transform.rotation, level.balls.transform);
+        ballObject.name = "Ball";
         ballObject.GetComponent<Ball>().SetBallStart();
         ballObject.GetComponent<Rigidbody2D>().velocity =
             Rotate(myVelocity, radians);

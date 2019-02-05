@@ -16,32 +16,25 @@ public class Paddle : MonoBehaviour
 
     // state variables
     Coroutine changeScaleXCoroutine;
-    public bool isAutoPlayEnabled;
-    Ball ball;
-    Level level;
+    public Ball ball;
+    public Level level;
+    public bool isLevelWorking;
 
     void Start()
     {
         paddleSizeX = transform.localScale.x;
         paddleSizeY = transform.localScale.y;
         paddleSizeZ = transform.localScale.z;
-        if (gameObject.tag == "Paddle")
-        {
-            Sprite paddle = Resources.Load<Sprite>("paddle");
-            gameObject.GetComponent<SpriteRenderer>().sprite = paddle;
-        }
-        ball = FindObjectOfType<Ball>();
-        level = FindObjectOfType<Level>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (level.IsLevelWorking())
+        if (isLevelWorking)
         {
             transform.position = new Vector2(
                 Mathf.Clamp(
-                    PaddlePosX(isAutoPlayEnabled),
+                    PaddlePosX(level.isAutoPlayEnabled),
                     minX + transform.localScale.x / 2,
                     maxX - transform.localScale.x / 2),
                 transform.position.y);
@@ -55,11 +48,10 @@ public class Paddle : MonoBehaviour
         {
             if (ball == null)
             {
-                ball = FindObjectOfType<Ball>();
+                ball = level.GetComponentInChildren<Ball>();
             }
             return ball.transform.position.x;
         }
-
         else
             return Input.mousePosition.x / Screen.width * screenWidthInUnits
                 - screenWidthInUnits / 2;
@@ -79,5 +71,15 @@ public class Paddle : MonoBehaviour
         yield return new WaitForSeconds(duration);
         transform.localScale = new Vector3
                     (paddleSizeX, paddleSizeY, paddleSizeZ);
+    }
+
+    public void StartLevel()
+    {
+        isLevelWorking = true;
+    }
+
+    public void StopLevel()
+    {
+        isLevelWorking = false;
     }
 }

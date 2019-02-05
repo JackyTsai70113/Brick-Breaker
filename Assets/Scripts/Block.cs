@@ -14,6 +14,7 @@ public class Block : MonoBehaviour
 
     // cached reference
     Level level;
+    Transform fortuneSquaresTransform;
 
     // state variables
     [SerializeField] int timesHit; // only serialized for debug purposes
@@ -22,9 +23,9 @@ public class Block : MonoBehaviour
     void Start()
     {
         level = FindObjectOfType<Level>();
-        //Resources.Load<Sprite>("paddle");
+        fortuneSquaresTransform = level.fortuneSquares.transform;
         CountBreakableBlocks();
-        fortuneNumber = Random.Range(0, 2);
+        fortuneNumber = Random.Range(4, 5);
     }
 
     private void CountBreakableBlocks()
@@ -32,6 +33,7 @@ public class Block : MonoBehaviour
         if (tag == "Breakable")
         {
             level.CountBlocks();
+            level.AddBlockList(gameObject.name, timesHit);
         }
     }
 
@@ -44,10 +46,15 @@ public class Block : MonoBehaviour
     private void HandleHit()
     {
         timesHit++;
-        if (timesHit > hitSprites.Length)
-            DestroyBlock();
-        else
+        level.AddBlockList(gameObject.name, timesHit);
+        if (timesHit == hitSprites.Length + 1)
         {
+            gameObject.SetActive(false);
+            DestroyBlock();
+        }
+        else if (timesHit < hitSprites.Length + 1)
+        {
+
             AudioSource.PlayClipAtPoint
                 (unBreakSound, Camera.main.transform.position);
             GetComponent<SpriteRenderer>().sprite = hitSprites[timesHit - 1];
@@ -72,15 +79,19 @@ public class Block : MonoBehaviour
     private void TriggerSparklesVFX()
     {
         GameObject sparkles = Instantiate
-            (blockSparklesVFX, transform.position, transform.rotation);
+            (blockSparklesVFX, transform.position, 
+            transform.rotation);
         Destroy(sparkles, 0.5f);
     }
 
     private void TriggerLuckySquare()
     {
         GameObject fortuneSquare = Instantiate(
-            fortuneSquareSprite, transform.position, Quaternion.identity);
+            fortuneSquareSprite, transform.position, 
+            Quaternion.identity, fortuneSquaresTransform);
         fortuneSquare.
             GetComponent<FortuneSquare>().SetFortuneNumber(fortuneNumber);
+        fortuneSquare.GetComponent<FortuneSquare>().SetLevel(level);
+        fortuneSquare.GetComponent<FortuneSquare>().GetSpeed();
     }
 }

@@ -9,7 +9,6 @@ public class LoseCollider : MonoBehaviour
 
     void Start()
     {
-        level = FindObjectOfType<Level>();
     }
 
     void Update()
@@ -31,5 +30,10 @@ public class LoseCollider : MonoBehaviour
         {
             Debug.LogError("Lose Collider collide with " + other.gameObject.tag);
         }
+    }
+
+    public void SetLevel(Level level)
+    {
+        this.level = level;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class FortuneSquare : MonoBehaviour
 {
@@ -16,18 +17,22 @@ public class FortuneSquare : MonoBehaviour
 
     // cached reference]
     Level level;
+    Balls ballsScript;
 
     // state variables
     private int fortuneNumber;
     void Start()
     {
-        level = FindObjectOfType<Level>();
+    }
+
+    public void GetSpeed()
+    {
         GetComponent<Rigidbody2D>().velocity = new Vector2(0f, speed);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (level.IsLevelWorking() == false)
+        if (!level.IsLevelWorking())
             Destroy(gameObject);
         if (other.gameObject.tag == "Paddle"
             || other.gameObject.tag == "Separated Paddle")
@@ -63,7 +68,7 @@ public class FortuneSquare : MonoBehaviour
         }
 
         this.fortuneNumber = fortuneNumber;
-        Debug.Log(" " + fortuneNumber + " " + GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength());
+        //Debug.Log(" " + fortuneNumber + " " + GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength());
         GetComponent<SpriteRenderer>().sprite = 
             GetComponent<SpriteLoader>().GetImage(fortuneNumber);
     }
@@ -74,30 +79,30 @@ public class FortuneSquare : MonoBehaviour
         {
             case 0:
                 level.TriggerGoodFortuneSquareSound();
-                StartCoroutine(FindObjectOfType<Paddle>().
+                StartCoroutine(level.activePaddle.
                     ChangeScaleX(biggerPaddleSizeScaleX, duration));
                 break;
             case 1:
                 level.TriggerBadFortuneSquareSound();
-                StartCoroutine(FindObjectOfType<Paddle>().
+                StartCoroutine(level.activePaddle.
                     ChangeScaleX(smallerPaddleSizeScaleX, duration));
                 break;
             case 2:
                 level.TriggerGoodFortuneSquareSound();
-                foreach (Ball ball in FindObjectsOfType<Ball>())
+                foreach (Ball ball in level.balls.GetComponentsInChildren<Ball>())
                     ball.CheckForChangingScale(biggerBallSizeScale, duration);
                 break;
             case 3:
                 level.TriggerBadFortuneSquareSound();
-                foreach (Ball ball in FindObjectsOfType<Ball>())
+                foreach (Ball ball in level.balls.GetComponentsInChildren<Ball>())
                    ball.CheckForChangingScale(smallerBallSizeScale, duration);
                 break;
             case 4:
-                Ball[] balls = FindObjectsOfType<Ball>();
+                Ball[] balls = level.balls.GetComponentsInChildren<Ball>();
                 if (balls.Length >= 9)
                     break;
                 level.TriggerGoodFortuneSquareSound();
-                for (int i = 0; i < 3 && i < balls.Length;i++)
+                for (int i = 0; i < 3 && i < balls.Length && balls[i] !=null; i++)
                 {
                     balls[i].MultiBall();
                 }
@@ -113,5 +118,8 @@ public class FortuneSquare : MonoBehaviour
         Destroy(gameObject);
     }
 
-
+    public void SetLevel(Level level)
+    {
+        this.level = level;
+    }
 }

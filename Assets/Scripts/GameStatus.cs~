@@ -21,6 +21,10 @@ public class GameStatus : MonoBehaviour {
 
     private void Awake()
     {
+        Debug.Log(SceneManager.GetActiveScene().buildIndex);
+        if (SceneManager.GetActiveScene().buildIndex == 0 ||
+            SceneManager.GetActiveScene().buildIndex == 4)
+            Destroy(gameObject);
         int gameStatusCount = FindObjectsOfType<GameStatus>().Length;
         if (gameStatusCount > 1)
         {
@@ -34,7 +38,6 @@ public class GameStatus : MonoBehaviour {
     private void Start()
     {
         SetCurrentScoreZero();
-        
     }
 
     public void SetCurrentScoreZero()
@@ -69,5 +72,10 @@ public class GameStatus : MonoBehaviour {
     public void SetScoreText()
     {
         scoreText.text = currentScore.ToString();
+    }
+
+    public FrameController GetFrameController()
+    {
+        return GetComponentInChildren<FrameController>();
     }
 }

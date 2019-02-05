@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,50 +14,99 @@ public class Level : MonoBehaviour
     // state variables
     private float startingTime;
     private int playingTime;
-    private bool isWorking;
-    public int ballNumber;
+    public bool isWorking;
+    [SerializeField] float ballNumber;
+    public bool isAutoPlayEnabled;
     Coroutine SeparatePaddleCoroutine;
 
     // cached reference
     GameStatus gameStatus;
     FrameController frameController;
-    public GameObject paddle;
-    public GameObject separatedPaddle;
+    public Paddle paddle;
+    public Paddle separatedPaddle;
+    public Paddle activePaddle;
+    public Transform balls;
+    public Transform fortuneSquares;
+
+    public List<GameObject> ballList;
+    public List<String> blockList;
+
     public AudioClip loseAudio;
     public AudioClip goodFortuneSquareSound;
     public AudioClip badFortuneSquareSound;
 
     public void Start()
     {
-        gameStatus = FindObjectOfType<GameStatus>();
-        frameController = FindObjectOfType<FrameController>();
-
-        gameStatus.SetLevelText();
-        Reset();
+        ResetLevel();
+        ResetFrame();
+        Debug.Log("level start.");
     }
 
     private void Update()
     {
         Time.timeScale = gameSpeed;
-        playingTime = (int)(Time.time - startingTime);
         if (isWorking)
+        {
+            playingTime = (int)(Time.time - startingTime);
             gameStatus.SetTimeText(playingTime);
+        }
 
     }
 
-    private void Reset()
+    private void ResetFrame()
     {
+        gameStatus = FindObjectOfType<GameStatus>();
+        foreach(LoseCollider lc in gameStatus.GetComponentsInChildren<LoseCollider>())
+            lc.SetLevel(gameObject.GetComponent<Level>());
+        frameController = gameStatus.GetFrameController();
         frameController.ResetFrame();
-        startingTime = Time.time;
-        isWorking = true;
         gameStatus.SetLevelText();
-        separatedPaddle.SetActive(false);
+        startingTime = Time.time;
+    }
+
+    private void ResetLevel()
+    {
+        isWorking = true;
+        separatedPaddle.gameObject.SetActive(false);
+        activePaddle = paddle;
+        paddle.StartLevel();
+        separatedPaddle.StartLevel();
+    }
+
+    private void StopLevel()
+    {
+        isWorking = false;
+        paddle.StopLevel();
+        separatedPaddle.StopLevel();
     }
 
     public void CountBlocks()
     {
         breakableBlocks++;
-        //Debug.Log("++ : " + breakableBlocks + " Blocks");
+    }
+
+    public void AddBlockList(string objectName, float timesHit)
+    {
+        for (int i = 0; i < blockList.Count; i++)
+            if (blockList[i].Contains(objectName))
+            {
+                blockList.RemoveAt(i);
+                break;
+            }
+        blockList.Add(objectName + " " + timesHit.ToString());
+        blockList.Sort();
+    }
+
+    public void AddBallList(GameObject ballObject)
+    {
+        for (int i = 0; i < ballList.Count; i++)
+            if (ballList[i] == ballObject)
+            {
+                ballList.RemoveAt(i);
+                break;
+            }
+        ballList.Add(ballObject);
+        ballList.Sort();
     }
 
     public void BlockDestroyed()
@@ -66,16 +116,9 @@ public class Level : MonoBehaviour
         gameStatus.AddtoScore();
         if (breakableBlocks <= 0)
         {
-            StopWorking();
+            StopLevel();
             frameController.DropWinFrame();
         }
-    }
-
-    public void StopWorking()
-    {
-        isWorking = false;
-        foreach (Ball ball in FindObjectsOfType<Ball>())
-            ball.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
     public bool IsLevelWorking()
@@ -83,25 +126,29 @@ public class Level : MonoBehaviour
         return isWorking;
     }
 
-    public int GetBallNumber()
+    public float GetBallNumber()
     {
         return ballNumber;
     }
 
     public void AddBallNumber()
     {
+        Debug.Log("before++ " + ballNumber.ToString());
         ballNumber++;
+        Debug.Log("++ " + ballNumber.ToString());
     }
 
     public void MinusBallNumber()
     {
-        ballNumber--;
-        if (GetBallNumber() <= 0)
+        Debug.Log("before-- " + ballNumber.ToString());
+        ballNumber = ballNumber - 1;
+        Debug.Log("-- " + ballNumber.ToString());
+        if (ballNumber <= 0)
         {
             AudioSource.PlayClipAtPoint(
                 loseAudio, Camera.main.transform.position);
             frameController.DropLoseFrame();
-            StopWorking();
+            StopLevel();
         }
     }
 
@@ -114,11 +161,13 @@ public class Level : MonoBehaviour
 
     private IEnumerator SeparatePaddle(float duration)
     {
-        paddle.SetActive(false);
-        separatedPaddle.SetActive(true);
+        paddle.gameObject.SetActive(false);
+        separatedPaddle.gameObject.SetActive(true);
+        activePaddle = separatedPaddle;
         yield return new WaitForSeconds(duration);
-        paddle.SetActive(true);
-        separatedPaddle.SetActive(false);
+        paddle.gameObject.SetActive(true);
+        separatedPaddle.gameObject.SetActive(false);
+        activePaddle = paddle;
     }
 
     public void TriggerGoodFortuneSquareSound()
@@ -135,7 +184,7 @@ public class Level : MonoBehaviour
 
     public void ResetSizeOfAllBalls(float sizeX, float sizeY, float sizeZ)
     {
-        foreach (Ball ball in FindObjectsOfType<Ball>())
+        foreach (Ball ball in balls.GetComponentsInChildren<Ball>())
             ball.transform.localScale = new Vector3(sizeX, sizeY, sizeZ);
     }
 }
