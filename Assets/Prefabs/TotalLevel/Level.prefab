@@ -677,6 +677,7 @@ MonoBehaviour:
   fortuneSquares: {fileID: 1660715248319200369}
   ballList: []
   blockList: []
+  winAudio: {fileID: 8300000, guid: 9def4f75406be4cbf801db8ae11f310f, type: 3}
   loseAudio: {fileID: 8300000, guid: 8353d947843b3ad42bf9591b09bee5fa, type: 3}
   goodFortuneSquareSound: {fileID: 8300000, guid: 2d05fe8f827d89747804910e2c07b64d,
     type: 3}

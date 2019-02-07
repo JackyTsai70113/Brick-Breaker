@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class FrameController : MonoBehaviour {
 
     // config parameter
-    [SerializeField] float speed = 400f;
+    [SerializeField] float speed;
 
     //cached reference
 
@@ -27,18 +27,16 @@ public class FrameController : MonoBehaviour {
 
     private void Start()
     {
-        posX0 = winFrame.transform.position.x;
-        ResetFrame();
     }
 
     public void ResetFrame()
     {
-        float canvasHeight = GetComponent<RectTransform>().rect.height;
-        float frameHeight = winFrame.GetComponent<RectTransform>().rect.height;
-        float canvasLocalScaleY = GetComponent<RectTransform>().localScale.y;
-        posY0 = (canvasHeight + frameHeight / 2) * canvasLocalScaleY;
-        winFrame.transform.position = new Vector2(posX0, posY0);
-        loseFrame.transform.position = new Vector2(posX0, posY0);
+        float frameHeight = loseFrame.GetComponent<RectTransform>().rect.height;
+        posX0 = loseFrame.transform.localPosition.x;
+        posY0 = frameHeight *  1.2f;
+        target = new Vector2(posX0, 0);
+        winFrame.transform.localPosition = new Vector2(posX0, posY0);
+        loseFrame.transform.localPosition = new Vector2(posX0, posY0);
     }
 
     // Update is called once per frame
@@ -59,17 +57,11 @@ public class FrameController : MonoBehaviour {
     {
         if (activeFrame != null)
         {
-            float canvasHeight = GetComponent<RectTransform>().rect.height;
-            float canvasLocalScaleY = GetComponent<RectTransform>().localScale.y;
-            posY1 = canvasHeight / 2 * canvasLocalScaleY;
-            target = new Vector2(posX0, posY1);
-            posX = activeFrame.transform.position.x;
-            posY = activeFrame.transform.position.y;
-            if (Vector2.Distance(activeFrame.transform.position, target) > 0.001)
+            if (Vector2.Distance(activeFrame.transform.localPosition, target) > 0.1)
             {
                 step = speed * Time.deltaTime;
-                activeFrame.transform.position = Vector2.MoveTowards
-                    (activeFrame.transform.position, target, step);
+                activeFrame.transform.localPosition = Vector2.MoveTowards
+                    (activeFrame.transform.localPosition, target, step);
             }
             else
                 activeFrame = null;

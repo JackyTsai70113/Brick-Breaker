@@ -20,7 +20,7 @@ public class Ball : MonoBehaviour {
     Coroutine changeScaleCoroutine;
     Vector2 paddleToBallVector;
     bool hasStarted;
-    float minVelocityMagnitude;
+    float velocityMagnitude;
 
     void Start()
     {
@@ -33,7 +33,7 @@ public class Ball : MonoBehaviour {
         paddleToBallVector = 
             transform.position - paddle.transform.position;
         myRigidbody2D = GetComponent<Rigidbody2D>();
-        minVelocityMagnitude = new Vector2(xPush, yPush).magnitude;
+        velocityMagnitude = new Vector2(xPush, yPush).magnitude;
     }
 
     // Update is called once per frame
@@ -56,10 +56,10 @@ public class Ball : MonoBehaviour {
                 myRigidbody2D.velocity +=
                     new Vector2(0, 1) * Mathf.Sign(myRigidbody2D.velocity.y);
             }
-            else if (myRigidbody2D.velocity.magnitude < minVelocityMagnitude)
-                myRigidbody2D.velocity *= minVelocityMagnitude / myRigidbody2D.velocity.magnitude;
-            else if (myRigidbody2D.velocity.magnitude > 2 * minVelocityMagnitude)
-                myRigidbody2D.velocity *= minVelocityMagnitude / myRigidbody2D.velocity.magnitude;
+            else if (myRigidbody2D.velocity.magnitude < velocityMagnitude)
+                myRigidbody2D.velocity *= velocityMagnitude / myRigidbody2D.velocity.magnitude;
+            else if (myRigidbody2D.velocity.magnitude > 2 * velocityMagnitude)
+                myRigidbody2D.velocity *= velocityMagnitude / myRigidbody2D.velocity.magnitude;
         }
         else
             myRigidbody2D.velocity = Vector2.zero;

@@ -7,24 +7,24 @@ using UnityEngine.SceneManagement;
 public class GameStatus : MonoBehaviour {
 
     // config parameter
-    [SerializeField] int pointPerBlockDestroyed = 40;
-    
+    public int pointPerBlockDestroyed = 40;
+
+    public GameObject playSpace;
+    public GameObject gameCanvas;
+    public FrameController frameController;
+    public LoseCollider[] loseColliders;
+
     //cached reference
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI scoreText;
 
-    // state variables
-    public int currentScore;
-
-    
+    private float totalTime;
+    private int totalScore;
+    private int totalBlocks;
 
     private void Awake()
     {
-        Debug.Log(SceneManager.GetActiveScene().buildIndex);
-        if (SceneManager.GetActiveScene().buildIndex == 0 ||
-            SceneManager.GetActiveScene().buildIndex == 4)
-            Destroy(gameObject);
         int gameStatusCount = FindObjectsOfType<GameStatus>().Length;
         if (gameStatusCount > 1)
         {
@@ -37,45 +37,102 @@ public class GameStatus : MonoBehaviour {
 
     private void Start()
     {
-        SetCurrentScoreZero();
-    }
-
-    public void SetCurrentScoreZero()
-    {
-        currentScore = 0;
+        SetFrameController();
+        SetLoseColliders();
         SetScoreText();
     }
 
-    void Update()
+    private void SetFrameController()
     {
+        frameController = GetComponentInChildren<FrameController>();
     }
 
-    // TimeText
+    public FrameController GetFrameController()
+    {
+        return frameController;
+    }
+
+    private void SetLoseColliders()
+    {
+        loseColliders = GetComponentsInChildren<LoseCollider>();
+    }
+
+    public LoseCollider[] GetLoseColliders()
+    {
+        return loseColliders;
+    }
+
+    // Time
     public void SetTimeText(int playingTime)
     {
         timeText.text = playingTime.ToString();
     }
 
-    // LevelText
+    public void AddTotalTime(float time)
+    {
+        totalTime += time;
+    }
+
+    public float GetTotalTime()
+    {
+        return totalTime;
+    }
+
+    // Level
     public void SetLevelText()
     {
         levelText.text = SceneManager.GetActiveScene().name;
     }
 
-    // ScoreText
+    // Score
     public void AddtoScore()
     {
-        currentScore += pointPerBlockDestroyed;
+        totalScore += pointPerBlockDestroyed;
         SetScoreText();
     }
 
     public void SetScoreText()
     {
-        scoreText.text = currentScore.ToString();
+        scoreText.text = totalScore.ToString();
     }
 
-    public FrameController GetFrameController()
+    public void ResetScoreText()
     {
-        return GetComponentInChildren<FrameController>();
+        totalScore = 0;
+        scoreText.text = totalScore.ToString();
+    }
+
+    public int GetTotalScore()
+    {
+        return totalScore;
+    }
+
+    // Block
+    public void AddTotalBlocks(int blocksNumber)
+    {
+        totalBlocks += blocksNumber;
+    }
+
+    public int GetTotalBlocks()
+    {
+        return totalBlocks;
+    }
+
+    //Music
+    public AudioSource GetAudioSource()
+    {
+        return GetComponent<AudioSource>();
+    }
+
+    public void SetAudioClip(AudioClip clip)
+    {
+        GetComponent<AudioSource>().clip = clip;
+        GetComponent<AudioSource>().Play();
+    }
+
+    public void SetGameStatusUI(bool boolean)
+    {
+        playSpace.SetActive(boolean);
+        gameCanvas.SetActive(boolean);
     }
 }

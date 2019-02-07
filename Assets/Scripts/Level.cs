@@ -13,7 +13,7 @@ public class Level : MonoBehaviour
 
     // state variables
     private float startingTime;
-    private int playingTime;
+    private float playingTime;
     public bool isWorking;
     [SerializeField] float ballNumber;
     public bool isAutoPlayEnabled;
@@ -29,17 +29,19 @@ public class Level : MonoBehaviour
     public Transform fortuneSquares;
 
     public List<GameObject> ballList;
-    public List<String> blockList;
+    public List<string> blockList;
 
+    public AudioClip winAudio;
     public AudioClip loseAudio;
     public AudioClip goodFortuneSquareSound;
     public AudioClip badFortuneSquareSound;
+
+    public GameStatus gg;
 
     public void Start()
     {
         ResetLevel();
         ResetFrame();
-        Debug.Log("level start.");
     }
 
     private void Update()
@@ -47,8 +49,8 @@ public class Level : MonoBehaviour
         Time.timeScale = gameSpeed;
         if (isWorking)
         {
-            playingTime = (int)(Time.time - startingTime);
-            gameStatus.SetTimeText(playingTime);
+            playingTime = Time.time - startingTime;
+            gameStatus.SetTimeText((int)playingTime);
         }
 
     }
@@ -56,16 +58,17 @@ public class Level : MonoBehaviour
     private void ResetFrame()
     {
         gameStatus = FindObjectOfType<GameStatus>();
-        foreach(LoseCollider lc in gameStatus.GetComponentsInChildren<LoseCollider>())
-            lc.SetLevel(gameObject.GetComponent<Level>());
+        gameStatus.SetLevelText();
+        gameStatus.SetGameStatusUI(true);
         frameController = gameStatus.GetFrameController();
         frameController.ResetFrame();
-        gameStatus.SetLevelText();
-        startingTime = Time.time;
+        foreach(LoseCollider lc in gameStatus.GetLoseColliders())
+            lc.SetLevel(this);
     }
 
     private void ResetLevel()
     {
+        startingTime = Time.time;
         isWorking = true;
         separatedPaddle.gameObject.SetActive(false);
         activePaddle = paddle;
@@ -112,11 +115,14 @@ public class Level : MonoBehaviour
     public void BlockDestroyed()
     {
         breakableBlocks--;
-        //Debug.Log("-- : " + breakableBlocks + " Blocks");
+        gameStatus.AddTotalBlocks(1);
         gameStatus.AddtoScore();
         if (breakableBlocks <= 0)
         {
+            AudioSource.PlayClipAtPoint(
+                winAudio, Camera.main.transform.position);
             StopLevel();
+            gameStatus.AddTotalTime(playingTime);
             frameController.DropWinFrame();
         }
     }
@@ -133,22 +139,19 @@ public class Level : MonoBehaviour
 
     public void AddBallNumber()
     {
-        Debug.Log("before++ " + ballNumber.ToString());
         ballNumber++;
-        Debug.Log("++ " + ballNumber.ToString());
     }
 
     public void MinusBallNumber()
     {
-        Debug.Log("before-- " + ballNumber.ToString());
         ballNumber = ballNumber - 1;
-        Debug.Log("-- " + ballNumber.ToString());
         if (ballNumber <= 0)
         {
             AudioSource.PlayClipAtPoint(
                 loseAudio, Camera.main.transform.position);
-            frameController.DropLoseFrame();
+            gameStatus.AddTotalTime(playingTime);
             StopLevel();
+            frameController.DropLoseFrame();
         }
     }
 
@@ -179,7 +182,7 @@ public class Level : MonoBehaviour
     public void TriggerBadFortuneSquareSound()
     {
         AudioSource.PlayClipAtPoint(
-            goodFortuneSquareSound, Camera.main.transform.position);
+            badFortuneSquareSound, Camera.main.transform.position);
     }
 
     public void ResetSizeOfAllBalls(float sizeX, float sizeY, float sizeZ)

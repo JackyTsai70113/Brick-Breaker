@@ -25,7 +25,9 @@ public class Block : MonoBehaviour
         level = FindObjectOfType<Level>();
         fortuneSquaresTransform = level.fortuneSquares.transform;
         CountBreakableBlocks();
-        fortuneNumber = Random.Range(4, 5);
+        fortuneNumber = Random.Range(0, 15);
+        if (fortuneNumber >= 10)
+            fortuneNumber = 4;
     }
 
     private void CountBreakableBlocks()
