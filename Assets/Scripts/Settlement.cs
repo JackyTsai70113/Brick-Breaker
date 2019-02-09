@@ -11,9 +11,13 @@ public class Settlement : MonoBehaviour
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
-        SetTotalScoreText(gameStatus.GetTotalTime(), 
-            gameStatus.GetTotalScore(), gameStatus.GetTotalBlocks());
-        gameStatus.SetGameStatusUI(false);
+        if(gameStatus != null)
+        {
+            SetTotalScoreText(gameStatus.GetTotalTime(),
+                        gameStatus.GetTotalScore(), gameStatus.GetTotalBlocks());
+            gameStatus.SetGameStatusUI(false);
+        }
+
     }
 
     private void SetTotalScoreText(float totalTime, int totalScore, int totalBlocks)

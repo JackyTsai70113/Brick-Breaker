@@ -49,6 +49,7 @@ public class GameStatus : MonoBehaviour {
 
     public FrameController GetFrameController()
     {
+        SetFrameController();
         return frameController;
     }
 
@@ -127,7 +128,8 @@ public class GameStatus : MonoBehaviour {
     public void SetAudioClip(AudioClip clip)
     {
         GetComponent<AudioSource>().clip = clip;
-        GetComponent<AudioSource>().Play();
+        if (!GetComponent<AudioSource>().isPlaying)
+            GetComponent<AudioSource>().Play();
     }
 
     public void SetGameStatusUI(bool boolean)

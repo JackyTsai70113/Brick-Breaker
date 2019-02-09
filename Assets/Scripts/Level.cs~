@@ -61,7 +61,7 @@ public class Level : MonoBehaviour
         gameStatus.SetLevelText();
         gameStatus.SetGameStatusUI(true);
         frameController = gameStatus.GetFrameController();
-        frameController.ResetFrame();
+        gameStatus.GetFrameController().ResetFrame();
         foreach(LoseCollider lc in gameStatus.GetLoseColliders())
             lc.SetLevel(this);
     }

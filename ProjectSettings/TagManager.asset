@@ -3,15 +3,7 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags:
-  - Breakable
-  - Unbreakable
-  - Paddle
-  - Fortune Square
-  - Lose Bottom Collider
-  - Ball
-  - Separated Paddle
-  - Collider
+  tags: []
   layers:
   - Default
   - TransparentFX
