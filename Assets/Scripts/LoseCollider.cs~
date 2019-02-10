@@ -5,7 +5,7 @@ using UnityEngine;
 public class LoseCollider : MonoBehaviour
 {
     //cached reference
-    Level level;
+    public Level level;
 
     void Start()
     {
@@ -30,10 +30,5 @@ public class LoseCollider : MonoBehaviour
         {
             Debug.LogError("Lose Collider collide with " + other.gameObject.tag);
         }
-    }
-
-    public void SetLevel(Level level)
-    {
-        this.level = level;
     }
 }

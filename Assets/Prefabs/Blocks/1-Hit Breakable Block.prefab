@@ -122,7 +122,7 @@ MonoBehaviour:
   unBreakSound: {fileID: 0}
   breakSound: {fileID: 8300000, guid: ae7ce8a67c2637d4bb1a9a4889986b88, type: 3}
   blockSparklesVFX: {fileID: 100000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
-  fortuneSquareSprite: {fileID: 1833237728258770, guid: 7dd5f12d8f9334448a26dd2c99241a51,
+  fortuneSquareSprite: {fileID: 5817307001587871866, guid: 7dd5f12d8f9334448a26dd2c99241a51,
     type: 3}
   hitSprites: []
   timesHit: 0

@@ -9,10 +9,8 @@ public class GameStatus : MonoBehaviour {
     // config parameter
     public int pointPerBlockDestroyed = 40;
 
-    public GameObject playSpace;
     public GameObject gameCanvas;
     public FrameController frameController;
-    public LoseCollider[] loseColliders;
 
     //cached reference
     public TextMeshProUGUI timeText;
@@ -37,30 +35,7 @@ public class GameStatus : MonoBehaviour {
 
     private void Start()
     {
-        SetFrameController();
-        SetLoseColliders();
         SetScoreText();
-    }
-
-    private void SetFrameController()
-    {
-        frameController = GetComponentInChildren<FrameController>();
-    }
-
-    public FrameController GetFrameController()
-    {
-        SetFrameController();
-        return frameController;
-    }
-
-    private void SetLoseColliders()
-    {
-        loseColliders = GetComponentsInChildren<LoseCollider>();
-    }
-
-    public LoseCollider[] GetLoseColliders()
-    {
-        return loseColliders;
     }
 
     // Time
@@ -132,9 +107,8 @@ public class GameStatus : MonoBehaviour {
             GetComponent<AudioSource>().Play();
     }
 
-    public void SetGameStatusUI(bool boolean)
+    public void SetGameCanvas(bool boolean)
     {
-        playSpace.SetActive(boolean);
         gameCanvas.SetActive(boolean);
     }
 }

@@ -15,7 +15,7 @@ public class Settlement : MonoBehaviour
         {
             SetTotalScoreText(gameStatus.GetTotalTime(),
                         gameStatus.GetTotalScore(), gameStatus.GetTotalBlocks());
-            gameStatus.SetGameStatusUI(false);
+            gameStatus.SetGameCanvas(false);
         }
 
     }

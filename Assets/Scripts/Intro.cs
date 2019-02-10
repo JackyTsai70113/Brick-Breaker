@@ -8,7 +8,7 @@ public class Intro : MonoBehaviour
     void Start()
     {
         GameStatus gameStatus = FindObjectOfType<GameStatus>();
-        gameStatus.SetGameStatusUI(false);
+        gameStatus.SetGameCanvas(false);
         gameStatus.ResetScoreText();
     }
 

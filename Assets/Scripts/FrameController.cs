@@ -33,7 +33,7 @@ public class FrameController : MonoBehaviour {
     {
         float frameHeight = loseFrame.GetComponent<RectTransform>().rect.height;
         posX0 = loseFrame.transform.localPosition.x;
-        posY0 = frameHeight *  1.2f;
+        posY0 = frameHeight *  2f;
         target = new Vector2(posX0, 0);
         winFrame.transform.localPosition = new Vector2(posX0, posY0);
         loseFrame.transform.localPosition = new Vector2(posX0, posY0);

@@ -36,8 +36,6 @@ public class Level : MonoBehaviour
     public AudioClip goodFortuneSquareSound;
     public AudioClip badFortuneSquareSound;
 
-    public GameStatus gg;
-
     public void Start()
     {
         ResetLevel();
@@ -59,11 +57,9 @@ public class Level : MonoBehaviour
     {
         gameStatus = FindObjectOfType<GameStatus>();
         gameStatus.SetLevelText();
-        gameStatus.SetGameStatusUI(true);
-        frameController = gameStatus.GetFrameController();
-        gameStatus.GetFrameController().ResetFrame();
-        foreach(LoseCollider lc in gameStatus.GetLoseColliders())
-            lc.SetLevel(this);
+        gameStatus.SetGameCanvas(true);
+        frameController = gameStatus.frameController;
+        gameStatus.frameController.ResetFrame();
     }
 
     private void ResetLevel()

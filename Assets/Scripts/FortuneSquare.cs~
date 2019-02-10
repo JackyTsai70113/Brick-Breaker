@@ -6,6 +6,8 @@ using System;
 
 public class FortuneSquare : MonoBehaviour
 {
+    public List<Sprite> fortuneSquareSprites;
+    public SpriteRenderer FSSprite;
 
     //cached reference
     [SerializeField] float duration;
@@ -17,7 +19,6 @@ public class FortuneSquare : MonoBehaviour
 
     // cached reference]
     Level level;
-    Balls ballsScript;
 
     // state variables
     private int fortuneNumber;
@@ -43,15 +44,11 @@ public class FortuneSquare : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        else if (other.gameObject.tag == "Breakable"
+        else if (!(other.gameObject.tag == "Breakable"
             || other.gameObject.tag == "Unbreakable"
             || other.gameObject.tag == "Ball"
             || other.gameObject.tag == "Fortune Square"
-            || other.gameObject.tag == "Collider")
-        {
-
-        }
-        else
+            || other.gameObject.tag == "Collider"))
         {
             Debug.LogError("Fortune Square collider with " + other.gameObject.transform.position);
             Debug.LogError(other.gameObject.name);
@@ -61,7 +58,7 @@ public class FortuneSquare : MonoBehaviour
 
     public void SetFortuneNumber(int fortuneNumber)
     {
-        if (fortuneNumber >= GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength())
+        if (fortuneNumber >= fortuneSquareSprites.Count)
         {
             Destroy(gameObject);
             return;
@@ -69,8 +66,7 @@ public class FortuneSquare : MonoBehaviour
 
         this.fortuneNumber = fortuneNumber;
         //Debug.Log(" " + fortuneNumber + " " + GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength());
-        GetComponent<SpriteRenderer>().sprite = 
-            GetComponent<SpriteLoader>().GetImage(fortuneNumber);
+        FSSprite.sprite = fortuneSquareSprites[fortuneNumber];
     }
 
     private void TriggerFortune()
