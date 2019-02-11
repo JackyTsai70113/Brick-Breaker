@@ -11,16 +11,19 @@ public class Settlement : MonoBehaviour
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
-        if(gameStatus != null)
+        gameStatus.CheckHighestScore();
+        if (gameStatus != null)
         {
-            SetTotalScoreText(gameStatus.GetTotalTime(),
-                        gameStatus.GetTotalScore(), gameStatus.GetTotalBlocks());
-            gameStatus.SetGameStatusUI(false);
+            SetTotalScoreText(
+                gameStatus.GetTotalTime(), gameStatus.GetTotalScore(), 
+                gameStatus.GetTotalBlocks(), gameStatus.GetHighestScore());
+            gameStatus.SetGameCanvas(false);
         }
 
     }
 
-    private void SetTotalScoreText(float totalTime, int totalScore, int totalBlocks)
+    private void SetTotalScoreText(
+        float totalTime, int totalScore, int totalBlocks, int highestScore)
     {
         totalScoreText.text =
             "Congratulation!\n" +
@@ -28,6 +31,7 @@ public class Settlement : MonoBehaviour
             "Here is you score!\n" +
             "Total Time: " + totalTime.ToString() + "\n" +
             "Total Score: " + totalScore.ToString() + "\n" +
-            "Total Block You broke: " + totalBlocks.ToString() + "\n";
+            "Total Block You broke: " + totalBlocks.ToString() + "\n" +
+            "Your Highest Score: " + highestScore.ToString() + "\n";
     }
 }

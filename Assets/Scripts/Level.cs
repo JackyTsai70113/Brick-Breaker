@@ -20,11 +20,11 @@ public class Level : MonoBehaviour
     Coroutine SeparatePaddleCoroutine;
 
     // cached reference
-    GameStatus gameStatus;
-    FrameController frameController;
-    public Paddle paddle;
-    public Paddle separatedPaddle;
-    public Paddle activePaddle;
+    public GameStatus gameStatus;
+    public FrameController frameController;
+    public GameObject paddle;
+    public GameObject separatedPaddle;
+    public GameObject activePaddle;
     public Transform balls;
     public Transform fortuneSquares;
 
@@ -68,15 +68,16 @@ public class Level : MonoBehaviour
         isWorking = true;
         separatedPaddle.gameObject.SetActive(false);
         activePaddle = paddle;
-        paddle.StartLevel();
-        separatedPaddle.StartLevel();
+
+        paddle.GetComponent<Paddle>().StartLevel();
+        separatedPaddle.GetComponent<Paddle>().StartLevel();
     }
 
     private void StopLevel()
     {
         isWorking = false;
-        paddle.StopLevel();
-        separatedPaddle.StopLevel();
+        paddle.GetComponent<Paddle>().StopLevel();
+        separatedPaddle.GetComponent<Paddle>().StopLevel();
     }
 
     public void CountBlocks()
@@ -160,11 +161,13 @@ public class Level : MonoBehaviour
 
     private IEnumerator SeparatePaddle(float duration)
     {
-        paddle.gameObject.SetActive(false);
-        separatedPaddle.gameObject.SetActive(true);
+        separatedPaddle.SetActive(true);
+        separatedPaddle.transform.position = paddle.transform.position;
+        paddle.SetActive(false);
         activePaddle = separatedPaddle;
         yield return new WaitForSeconds(duration);
         paddle.gameObject.SetActive(true);
+        paddle.transform.position = separatedPaddle.transform.position;
         separatedPaddle.gameObject.SetActive(false);
         activePaddle = paddle;
     }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6388586412121136523}
   - component: {fileID: 8279675161253504456}
   - component: {fileID: 1485878721989772174}
+  - component: {fileID: 4606898905462780085}
   m_Layer: 0
   m_Name: Left Trigger
   m_TagString: Lose Bottom Collider
@@ -76,6 +77,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 2883930236352358338}
+--- !u!50 &4606898905462780085
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848024745428719394}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1048155139668037098
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,6 +250,7 @@ GameObject:
   - component: {fileID: 8108309052756092098}
   - component: {fileID: 1662093129079766559}
   - component: {fileID: 5343593206133265990}
+  - component: {fileID: 5941377484230520877}
   m_Layer: 0
   m_Name: Top Trigger
   m_TagString: Lose Bottom Collider
@@ -293,6 +316,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 2883930236352358338}
+--- !u!50 &5941377484230520877
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2285387556610283319}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2312581061985876932
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,8 +1068,10 @@ MonoBehaviour:
   isWorking: 0
   ballNumber: 0
   isAutoPlayEnabled: 0
-  paddle: {fileID: 2884052105327058176}
-  separatedPaddle: {fileID: 2884189110370001882}
+  gameStatus: {fileID: 0}
+  frameController: {fileID: 0}
+  paddle: {fileID: 2996690737054504154}
+  separatedPaddle: {fileID: 2996927102191866536}
   activePaddle: {fileID: 0}
   balls: {fileID: 3818805748696195845}
   fortuneSquares: {fileID: 1660715248319200369}
@@ -1415,6 +1461,7 @@ GameObject:
   - component: {fileID: 6286092083174807411}
   - component: {fileID: 3237645795887508106}
   - component: {fileID: 2782125409500114942}
+  - component: {fileID: 791996396440049315}
   m_Layer: 0
   m_Name: Lose Bottom Collider
   m_TagString: Lose Bottom Collider
@@ -1480,6 +1527,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 2883930236352358338}
+--- !u!50 &791996396440049315
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7484997752793328904}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &8160304890640142978
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,6 +1603,7 @@ GameObject:
   - component: {fileID: 394842271226670758}
   - component: {fileID: 1775950903509935892}
   - component: {fileID: 2702289815988395853}
+  - component: {fileID: 1883182348236284463}
   m_Layer: 0
   m_Name: Right Trigger
   m_TagString: Lose Bottom Collider
@@ -1600,3 +1669,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   level: {fileID: 2883930236352358338}
+--- !u!50 &1883182348236284463
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8334402142898034831}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0

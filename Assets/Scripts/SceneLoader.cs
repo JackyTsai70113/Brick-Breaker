@@ -7,19 +7,20 @@ public class SceneLoader : MonoBehaviour {
 
     public AudioClip ButtonClickAudio;
     // cached reference
-    GameStatus gameStatus;
+    public GameStatus gameStatus;
 
     int currentSceneIndex;
 
     private void Start()
     {
-        gameStatus = GetComponentInParent<GameStatus>();
+
     }
 
     public void ReLoadScene()
     {
         TriggerButtonClickAudio();
-        gameStatus.ResetScoreText();
+        gameStatus.ResetScore();
+        gameStatus.SetScoreText();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -48,9 +49,9 @@ public class SceneLoader : MonoBehaviour {
     public void LoadIntroScene()
     {
         TriggerButtonClickAudio();
-        currentSceneIndex =
-            SceneManager.GetActiveScene().buildIndex;
+        gameStatus = FindObjectOfType<GameStatus>();
         SceneManager.LoadScene(0);
+        gameStatus.ResetScore();
     }
 
     public void QuitApplication()

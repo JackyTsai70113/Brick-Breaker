@@ -20,6 +20,7 @@ public class GameStatus : MonoBehaviour {
     private float totalTime;
     private int totalScore;
     private int totalBlocks;
+    private int highestScore;
 
     private void Awake()
     {
@@ -72,15 +73,31 @@ public class GameStatus : MonoBehaviour {
         scoreText.text = totalScore.ToString();
     }
 
-    public void ResetScoreText()
+    public void ResetScore()
     {
         totalScore = 0;
-        scoreText.text = totalScore.ToString();
     }
 
     public int GetTotalScore()
     {
         return totalScore;
+    }
+
+    public int GetHighestScore()
+    {
+        return highestScore;
+    }
+
+    public void ResetHighestScore()
+    {
+         highestScore = 0;
+    }
+
+    public void CheckHighestScore()
+    {
+        Debug.Log(totalScore + "dd" + highestScore);
+        if (totalScore > highestScore)
+            highestScore = totalScore;
     }
 
     // Block
@@ -111,4 +128,6 @@ public class GameStatus : MonoBehaviour {
     {
         gameCanvas.SetActive(boolean);
     }
+
+
 }

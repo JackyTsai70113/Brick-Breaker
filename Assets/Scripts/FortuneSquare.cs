@@ -75,12 +75,12 @@ public class FortuneSquare : MonoBehaviour
         {
             case 0:
                 level.TriggerGoodFortuneSquareSound();
-                StartCoroutine(level.activePaddle.
+                StartCoroutine(level.activePaddle.GetComponent<Paddle>().
                     ChangeScaleX(biggerPaddleSizeScaleX, duration));
                 break;
             case 1:
                 level.TriggerBadFortuneSquareSound();
-                StartCoroutine(level.activePaddle.
+                StartCoroutine(level.activePaddle.GetComponent<Paddle>().
                     ChangeScaleX(smallerPaddleSizeScaleX, duration));
                 break;
             case 2:
