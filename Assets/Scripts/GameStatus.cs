@@ -95,7 +95,6 @@ public class GameStatus : MonoBehaviour {
 
     public void CheckHighestScore()
     {
-        Debug.Log(totalScore + "dd" + highestScore);
         if (totalScore > highestScore)
             highestScore = totalScore;
     }
