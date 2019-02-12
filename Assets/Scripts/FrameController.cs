@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+﻿using UnityEngine;
 
-public class FrameController : MonoBehaviour {
-
-    // config parameter
-    [SerializeField] float speed;
-
-    //cached reference
-
+public class FrameController : MonoBehaviour 
+{
+    // cached reference
     [SerializeField] GameObject winFrame;
     [SerializeField] GameObject loseFrame;
     GameObject activeFrame;
+
+    // config parameter
+    [SerializeField] float speed;
 
     // state variables
     float step;
@@ -25,8 +19,10 @@ public class FrameController : MonoBehaviour {
     public float posY;
     Vector2 target;
 
-    private void Start()
+    // Update is called once per frame
+    void Update()
     {
+        DropFrame();
     }
 
     public void ResetFrame()
@@ -38,16 +34,12 @@ public class FrameController : MonoBehaviour {
         winFrame.transform.localPosition = new Vector2(posX0, posY0);
         loseFrame.transform.localPosition = new Vector2(posX0, posY0);
     }
-
-    // Update is called once per frame
-    private void Update ()
-    {
-        DropFrame();
-    }
+   
     public void DropLoseFrame()
     {
         activeFrame = loseFrame;
     }
+
     public void DropWinFrame()
     {
         activeFrame = winFrame;

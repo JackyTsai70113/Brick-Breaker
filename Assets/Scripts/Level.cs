@@ -6,22 +6,10 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
-    // determine breakable blocks
-    // config parameters
-    [Range(0.1f, 10f)] public float gameSpeed = 1f;
-    [SerializeField] int breakableBlocks;
-
-    // state variables
-    private float startingTime;
-    private float playingTime;
-    public bool isWorking;
-    [SerializeField] float ballNumber;
-    public bool isAutoPlayEnabled;
-    Coroutine SeparatePaddleCoroutine;
-
     // cached reference
     public GameStatus gameStatus;
     public FrameController frameController;
+
     public GameObject paddle;
     public GameObject separatedPaddle;
     public GameObject activePaddle;
@@ -36,7 +24,19 @@ public class Level : MonoBehaviour
     public AudioClip goodFortuneSquareSound;
     public AudioClip badFortuneSquareSound;
 
-    public void Start()
+    // config parameters
+    [Range(0.1f, 10f)] public float gameSpeed = 1f;
+    [SerializeField] int breakableBlocks;
+    public bool isAutoPlayEnabled;
+
+    // state variables
+    private float startingTime;
+    private float playingTime;
+    private float ballNumber;
+    private bool isWorking;
+    Coroutine SeparatePaddleCoroutine;
+
+    private void Start()
     {
         ResetLevel();
         ResetFrame();
@@ -50,7 +50,6 @@ public class Level : MonoBehaviour
             playingTime = Time.time - startingTime;
             gameStatus.SetTimeText((int)playingTime);
         }
-
     }
 
     private void ResetFrame()
@@ -68,7 +67,6 @@ public class Level : MonoBehaviour
         isWorking = true;
         separatedPaddle.gameObject.SetActive(false);
         activePaddle = paddle;
-
         paddle.GetComponent<Paddle>().StartLevel();
         separatedPaddle.GetComponent<Paddle>().StartLevel();
     }

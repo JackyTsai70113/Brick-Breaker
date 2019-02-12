@@ -3,18 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour {
-
-    public AudioClip ButtonClickAudio;
+public class SceneLoader : MonoBehaviour 
+{
     // cached reference
+    public AudioClip ButtonClickAudio;
     public GameStatus gameStatus;
 
+    // state variables
     int currentSceneIndex;
-
-    private void Start()
-    {
-
-    }
 
     public void ReLoadScene()
     {

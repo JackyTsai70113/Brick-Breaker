@@ -4,25 +4,25 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class GameStatus : MonoBehaviour {
-
+public class GameStatus : MonoBehaviour 
+{
     // config parameter
     public int pointPerBlockDestroyed = 40;
 
+    //cached reference
     public GameObject gameCanvas;
     public FrameController frameController;
-
-    //cached reference
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI levelText;
     public TextMeshProUGUI scoreText;
 
+    // state variables
     private float totalTime;
     private int totalScore;
     private int totalBlocks;
     private int highestScore;
 
-    private void Awake()
+    void Awake()
     {
         int gameStatusCount = FindObjectsOfType<GameStatus>().Length;
         if (gameStatusCount > 1)
@@ -34,7 +34,7 @@ public class GameStatus : MonoBehaviour {
             DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
+    void Start()
     {
         SetScoreText();
     }
@@ -127,6 +127,4 @@ public class GameStatus : MonoBehaviour {
     {
         gameCanvas.SetActive(boolean);
     }
-
-
 }

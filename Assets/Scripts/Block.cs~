@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    // cached reference
+    Level level;
+    Transform fortuneSquaresTransform;
 
     // config parameters
     [SerializeField] AudioClip unBreakSound;
@@ -12,14 +15,10 @@ public class Block : MonoBehaviour
     [SerializeField] GameObject fortuneSquareSprite;
     [SerializeField] Sprite[] hitSprites;
 
-    // cached reference
-    Level level;
-    Transform fortuneSquaresTransform;
-
     // state variables
     [SerializeField] int timesHit; // only serialized for debug purposes
     int fortuneNumber;
-    // Use this for initialization
+
     void Start()
     {
         level = FindObjectOfType<Level>();

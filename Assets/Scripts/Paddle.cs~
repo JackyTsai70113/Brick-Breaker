@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
+    // cached reference
+    public Ball ball;
+    public Level level;
+    public bool isLevelWorking;
+
     // config parameter
     public float screenWidthInUnits;
     public float minX;
     public float maxX;
 
-    //cached reference
+    // state variables
     [SerializeField] float paddleSizeX;
     [SerializeField] float paddleSizeY;
     [SerializeField] float paddleSizeZ;
-
-    // state variables
     Coroutine changeScaleXCoroutine;
-    public Ball ball;
-    public Level level;
-    public bool isLevelWorking;
 
     void Start()
     {
@@ -27,7 +27,6 @@ public class Paddle : MonoBehaviour
         paddleSizeZ = transform.localScale.z;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (isLevelWorking)
@@ -41,7 +40,7 @@ public class Paddle : MonoBehaviour
         }
     }
 
-    //Paddle is auto or not.
+    //Paddle is automove or not.
     private float PaddlePosX(bool isPaddleAuto)
     {
         if (isPaddleAuto)

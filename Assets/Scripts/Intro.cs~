@@ -5,20 +5,14 @@ using TMPro;
 
 public class Intro : MonoBehaviour
 {
-
+    // cached reference
     public TextMeshProUGUI highestScoreText;
-    // Start is called before the first frame update
+
     void Start()
     {
         GameStatus gameStatus = FindObjectOfType<GameStatus>();
         gameStatus.SetGameCanvas(false);
         SetHighestScore(gameStatus.GetHighestScore());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 
     public void SetHighestScore(int highestScore)

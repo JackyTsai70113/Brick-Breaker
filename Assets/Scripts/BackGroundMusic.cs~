@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BackGroundMusic : MonoBehaviour
 {
+    //cached reference
     GameStatus gameStatus;
     AudioClip audioClip;
-    // Start is called before the first frame update
+
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();

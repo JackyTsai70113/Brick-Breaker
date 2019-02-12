@@ -1,15 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System;
 
 public class FortuneSquare : MonoBehaviour
 {
+    // cached reference
     public List<Sprite> fortuneSquareSprites;
     public SpriteRenderer FSSprite;
+    Level level;
 
-    //cached reference
+    // config parameters
     [SerializeField] float duration;
     [SerializeField] float biggerPaddleSizeScaleX;
     [SerializeField] float smallerPaddleSizeScaleX;
@@ -17,14 +16,8 @@ public class FortuneSquare : MonoBehaviour
     [SerializeField] float smallerBallSizeScale;
     [SerializeField] float speed;
 
-    // cached reference]
-    Level level;
-
     // state variables
     private int fortuneNumber;
-    void Start()
-    {
-    }
 
     public void GetSpeed()
     {
@@ -41,16 +34,15 @@ public class FortuneSquare : MonoBehaviour
             TriggerFortune();
         }
         else if (other.gameObject.tag == "Lose Bottom Collider")
-        {
             Destroy(gameObject);
-        }
         else if (!(other.gameObject.tag == "Breakable"
             || other.gameObject.tag == "Unbreakable"
             || other.gameObject.tag == "Ball"
             || other.gameObject.tag == "Fortune Square"
             || other.gameObject.tag == "Collider"))
         {
-            Debug.LogError("Fortune Square collider with " + other.gameObject.transform.position);
+            Debug.LogError("Fortune Square collider with " + 
+                other.gameObject.transform.position);
             Debug.LogError(other.gameObject.name);
         }
 
@@ -63,9 +55,7 @@ public class FortuneSquare : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         this.fortuneNumber = fortuneNumber;
-        //Debug.Log(" " + fortuneNumber + " " + GetComponent<SpriteLoader>().GetFortuneSquareSpritesLength());
         FSSprite.sprite = fortuneSquareSprites[fortuneNumber];
     }
 
@@ -99,9 +89,7 @@ public class FortuneSquare : MonoBehaviour
                     break;
                 level.TriggerGoodFortuneSquareSound();
                 for (int i = 0; i < 3 && i < balls.Length && balls[i] !=null; i++)
-                {
                     balls[i].MultiBall();
-                }
                 break;
             case 5:
                 level.TriggerBadFortuneSquareSound();

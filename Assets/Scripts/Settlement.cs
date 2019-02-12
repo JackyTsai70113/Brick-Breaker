@@ -5,9 +5,10 @@ using TMPro;
 
 public class Settlement : MonoBehaviour
 {
+    // cached reference
     GameStatus gameStatus;
     public TextMeshProUGUI totalScoreText;
-    // Start is called before the first frame update
+
     void Start()
     {
         gameStatus = FindObjectOfType<GameStatus>();
@@ -19,7 +20,6 @@ public class Settlement : MonoBehaviour
                 gameStatus.GetTotalBlocks(), gameStatus.GetHighestScore());
             gameStatus.SetGameCanvas(false);
         }
-
     }
 
     private void SetTotalScoreText(
