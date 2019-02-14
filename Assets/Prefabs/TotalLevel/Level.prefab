@@ -919,15 +919,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f82530474c8f324f90e0978e86f6d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 2883686863129698993}
+  level: {fileID: 2883930236352358338}
+  isLevelWorking: 0
   screenWidthInUnits: 32
   minX: -15.65
   maxX: 7.65
   paddleSizeX: 10
   paddleSizeY: 3
   paddleSizeZ: 1
-  ball: {fileID: 2883686863129698993}
-  level: {fileID: 2883930236352358338}
-  isLevelWorking: 0
 --- !u!1 &2996927102191866536
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,15 +1000,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f82530474c8f324f90e0978e86f6d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ball: {fileID: 2883686863129698993}
+  level: {fileID: 2883930236352358338}
+  isLevelWorking: 0
   screenWidthInUnits: 32
   minX: -15.65
   maxX: 7.65
   paddleSizeX: 10
   paddleSizeY: 3
   paddleSizeZ: 1
-  ball: {fileID: 2883686863129698993}
-  level: {fileID: 2883930236352358338}
-  isLevelWorking: 0
 --- !u!1 &2997024167022433058
 GameObject:
   m_ObjectHideFlags: 0
@@ -1063,11 +1063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca9205a24e3f58419dfc776449dc05d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSpeed: 1
-  breakableBlocks: 0
-  isWorking: 0
-  ballNumber: 0
-  isAutoPlayEnabled: 0
   gameStatus: {fileID: 0}
   frameController: {fileID: 0}
   paddle: {fileID: 2996690737054504154}
@@ -1083,6 +1078,9 @@ MonoBehaviour:
     type: 3}
   badFortuneSquareSound: {fileID: 8300000, guid: 30d97bd9c3988c442bd7849a5a8f2f3a,
     type: 3}
+  gameSpeed: 1
+  breakableBlocks: 0
+  isAutoPlayEnabled: 0
 --- !u!1 &3207587769282998926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1245,7 +1243,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.2}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: -12.25, y: 0}
+  m_AnchoredPosition: {x: -12.35, y: -0}
   m_SizeDelta: {x: 33, y: 0}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!61 &8682420733878283088
