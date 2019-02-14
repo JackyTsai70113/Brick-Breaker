@@ -1,4 +1,4 @@
-Brick Breaker
+Project: Brick Breaker
 
 This is the repository related to my 2D game with Unity.
 
