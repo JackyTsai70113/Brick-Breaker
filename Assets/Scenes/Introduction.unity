@@ -458,6 +458,36 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -200
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6045967886625696839, guid: 917c34dafc93352498a4445577f209c4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 917c34dafc93352498a4445577f209c4, type: 3}
 --- !u!1001 &567268008
@@ -789,7 +819,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 54.55
+  m_fontSize: 54.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -883,75 +913,6 @@ RectTransform:
   m_AnchoredPosition: {x: -228.5, y: -6}
   m_SizeDelta: {x: -455, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &831748803
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6048925493567362260, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_Name
-      value: Game Camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6045967887011780424, guid: be0870f51a8b541e5a272d969ba65c72,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: be0870f51a8b541e5a272d969ba65c72, type: 3}
 --- !u!1 &858088914
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,7 +1161,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 249.15
+  m_fontSize: 249.1
   m_fontSizeBase: 260
   m_fontWeight: 400
   m_enableAutoSizing: 1
